@@ -48,14 +48,16 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                 <Grid item xs={12} sm={6}>
                                     <Box sx={{minWidth: 120}}>
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">גיר</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
                                             <Select
+                                                label={'Category'}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
-                                                <MenuItem value={'אוטומט'}>אוטומט</MenuItem>
-                                                <MenuItem value={'ידני'}>ידני</MenuItem>
-                                                <MenuItem value={'ידני/אוטומט'}>ידני/אוטומט</MenuItem>
+                                                <MenuItem value={'Sport'}>Sport</MenuItem>
+                                                <MenuItem value={'Shooters'}>Shooters</MenuItem>
+                                                <MenuItem value={'Multiplayer'}>Multiplayer</MenuItem>
+                                                <MenuItem value={'Strategy'}>Strategy</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Box>
@@ -63,16 +65,17 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                 <Grid item xs={12} sm={6}>
                                     <Box sx={{minWidth: 120}}>
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">דירוג מינימאלי</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Minimum Rate</InputLabel>
                                             <Select
+                                                label={'Minimum Rate'}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
-                                                <MenuItem value={1}>כוכב אחד</MenuItem>
-                                                <MenuItem value={2}>שני כוכבים</MenuItem>
-                                                <MenuItem value={3}>שלושה כוכבים</MenuItem>
-                                                <MenuItem value={4}>ארבעה כוכבים</MenuItem>
-                                                <MenuItem value={5}>חמישה כוכבים</MenuItem>
+                                                <MenuItem value={1}>One Star</MenuItem>
+                                                <MenuItem value={2}>Two Stars</MenuItem>
+                                                <MenuItem value={3}>Three Stars</MenuItem>
+                                                <MenuItem value={4}>Four Stars</MenuItem>
+                                                <MenuItem value={5}>Five Stars</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Box>
@@ -82,7 +85,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                         required
                                         fullWidth
                                         id="minPrice"
-                                        label="מחיר מינימאלי"
+                                        label="Min Price"
                                         name="price"
                                         autoComplete="price"
                                     />
@@ -92,7 +95,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                         required
                                         fullWidth
                                         id="maxPrice"
-                                        label="מחיר מקסימאלי"
+                                        label="Max Price"
                                         name="price"
                                         autoComplete="price"
                                     />
@@ -102,7 +105,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                         required
                                         fullWidth
                                         id="succeedRate"
-                                        label="אחוזי הצלחה"
+                                        label="Release Date"
                                         name="succeedRate"
                                         autoComplete="price"
                                     />
@@ -110,16 +113,17 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                 <Grid item xs={12} sm={6}>
                                     <Box sx={{minWidth: 120}}>
                                         <FormControl fullWidth>
-                                            <InputLabel id="demo-simple-select-label">אזור לימוד</InputLabel>
+                                            <InputLabel id="demo-simple-select-label">Platform</InputLabel>
                                             <Select
+                                                label={'Platform'}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                             >
-                                                <MenuItem value={'מרכז'}>מרכז</MenuItem>
-                                                <MenuItem value={'דרום'}>דרום</MenuItem>
-                                                <MenuItem value={'ירושלים והסביבה'}>ירושלים והסביבה</MenuItem>
-                                                <MenuItem value={'צפון'}>צפון</MenuItem>
-                                                <MenuItem value={'כל האזורים'}>כל האזורים</MenuItem>
+                                                <MenuItem value={'Playstation'}>Playstation</MenuItem>
+                                                <MenuItem value={'XBox'}>XBox</MenuItem>
+                                                <MenuItem value={'Steam'}>Steam</MenuItem>
+                                                <MenuItem value={'Origin'}>Origin</MenuItem>
+                                                <MenuItem value={'Windows'}>Windows</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </Box>
@@ -128,7 +132,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                     <Grid container justifyContent={'center'}>
                                         <Button size={'large'} variant="contained" color={'info'}>
                                             <Typography>
-                                                נקה הכול
+                                                Clear All
                                             </Typography>
                                         </Button>
                                     </Grid>
@@ -137,7 +141,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                     <Grid container justifyContent={'center'}>
                                         <Button size={'large'} variant="contained" color={'info'}>
                                             <Typography>
-                                                בצע סינון
+                                               Filter
                                             </Typography>
                                         </Button>
                                     </Grid>

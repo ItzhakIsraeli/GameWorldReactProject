@@ -1,24 +1,26 @@
 import React from 'react';
 import {
-    Avatar,
+    Avatar, Button,
     Card,
     CardContent,
     CardHeader,
     CardMedia,
     Dialog,
-    Grid,
+    Grid, IconButton,
     Typography
 } from "@mui/material";
 import {ItemType} from "../Item/Item";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface ItemDialogProps {
     isOpen: boolean,
     handleClose: () => void,
-    item: ItemType
+    item: ItemType,
+    handleOnClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 
-export const ItemDialog = ({item, isOpen, handleClose}: ItemDialogProps) => {
+export const ItemDialog = ({item, isOpen, handleClose, handleOnClick}: ItemDialogProps) => {
     return (
         <Dialog
             scroll={'body'}
@@ -44,10 +46,25 @@ export const ItemDialog = ({item, isOpen, handleClose}: ItemDialogProps) => {
                     <Grid container justifyContent={'center'}>
                         <Typography variant={'h5'}> Description: {item.description}</Typography>
                     </Grid>
-                    <Grid container justifyContent={'center'}>
-                        <Typography variant={'h5'}> Market: {item.market}</Typography>
-                    </Grid>
                 </CardContent>
+                <Grid container gap={3} alignItems={'center'} justifyContent={'center'}>
+                    <Grid item>
+                        <Button style={{marginLeft: 10}} variant={'contained'}
+                                onClick={(e) => handleOnClick(e)}>
+                            Add Item
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <IconButton title="הוסף למועדפים">
+                            <FavoriteIcon color={false ? 'error' : "inherit"}/>
+                        </IconButton>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                            Price: {item.price} ₪
+                        </Typography>
+                    </Grid>
+                </Grid>
             </Card>
         </Dialog>
     )

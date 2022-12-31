@@ -1,8 +1,9 @@
 import React from 'react';
-import {Box, Button, Card, CardContent, CardMedia, Grid, ListItemButton, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, CardMedia, Grid, IconButton, ListItemButton, Typography} from "@mui/material";
 import {ItemDialog} from "../ItemDialog/ItemDialog";
 import {addItemToCart} from "../redux/itemsList/itemsListActions";
 import {useDispatch} from "react-redux";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export interface ItemType {
     _id:string,
@@ -28,7 +29,7 @@ export const Item = (item: ItemType) => {
     }
 
     return (<>
-            <ItemDialog isOpen={isOpen} handleClose={handleClose} item={item}/>
+            <ItemDialog isOpen={isOpen} handleClose={handleClose} item={item} handleOnClick={handleOnClick}/>
             <ListItemButton onClick={() => setIsOpen(true)}>
                 <Card sx={{display: 'flex', width: 500, height: 200}}>
                     <Grid container justifyContent={'center'} gap={15}>
@@ -42,11 +43,15 @@ export const Item = (item: ItemType) => {
                                         Price: {item.price} ₪
                                     </Typography>
                                 </CardContent>
-
-                                <Button style={{marginLeft: 10}} variant={'contained'}
-                                        onClick={(e) => handleOnClick(e)}>
-                                    Add Item
-                                </Button>
+                                <Grid container gap={1} alignItems={'end'}>
+                                    <Button style={{marginLeft: 10}} variant={'contained'}
+                                            onClick={(e) => handleOnClick(e)}>
+                                        Add Item
+                                    </Button>
+                                    <IconButton title="הוסף למועדפים">
+                                        <FavoriteIcon color={false ? 'error' : "inherit"}/>
+                                    </IconButton>
+                                </Grid>
                             </Box>
                         </Grid>
                         <Grid item xs>
