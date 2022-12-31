@@ -8,7 +8,7 @@ interface ItemListProps {
 
 export const ItemList = ({data}: ItemListProps) => {
     return (
-        <Box>
+        <Box alignItems={'center'}>
             <List>
                 <Grid container justifyContent={'center'}>
                     {data.map((item) =>

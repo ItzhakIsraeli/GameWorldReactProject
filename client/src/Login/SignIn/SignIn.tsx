@@ -60,7 +60,7 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                         <SportsEsportsIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        התחברות
+                        Sing In
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                         <TextField
@@ -69,7 +69,7 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             required
                             fullWidth
                             id="email"
-                            label="שם משתמש / כתובת מייל"
+                            label="UserName / Email"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -80,12 +80,12 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             required
                             fullWidth
                             name="password"
-                            label="סיסמה"
+                            label="Password"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                         />
-                        {error && <Typography color={'red'}>שם משתמש או סיסמה שגויים, נסה שוב </Typography>
+                        {error && <Typography color={'red'}>Sorry your Username and/or Password are incorrect. please try again </Typography>
                         }
                         <Button
                             type="submit"
@@ -93,20 +93,20 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            התחבר
+                            Sing In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
+                            <Grid item >
                                 <Button>
                                     <Typography variant={'caption'}>
-                                        שכחתי סיסמה
+                                        Forgot password ?
                                     </Typography>
                                 </Button>
                             </Grid>
-                            <Grid item>
+                            <Grid item >
                                 <Button onClick={openSignUp}>
                                     <Typography variant={'caption'}>
-                                        אין לך חשבון? צור עכשיו
+                                        You haven't account? create now !
                                     </Typography>
                                 </Button>
                             </Grid>

@@ -6,11 +6,16 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid, List, ListItem, ListItemAvatar, ListItemText,
-    TextField, Typography
+    Grid,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    TextField,
+    Typography
 } from "@mui/material";
 import Axios from "axios";
-import React, {useState} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {itemsMiniStore, StoreState} from "../redux/miniStore";
 import {ItemType} from "../Item/Item";
@@ -24,9 +29,9 @@ interface CartFormProps {
 export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
     const items = useSelector((state: StoreState) => itemsMiniStore(state).ItemsList);
     const dispatch = useDispatch();
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [firstName, setFirstName] = React.useState("");
+    const [lastName, setLastName] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = React.useState("");
 
     const calculateTotal = () => {
         let val = 0;
@@ -121,7 +126,7 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
                         :
                         <DialogContent>
                             <DialogContentText>
-                                No items in cart.
+                                Your cart is empty. Go ahead and add some cool stuff to it!
                             </DialogContentText>
                         </DialogContent>
                 }
