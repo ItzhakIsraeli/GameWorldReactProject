@@ -7,9 +7,14 @@ export const typeDefs = gql`
         description: String!
         price: Int!
         image: String!
-        image2: String!
         market: String!
         limit: Int
+    }
+    type Order {
+        firstName: String,
+        lastName: String,
+        phone: String,
+        products: [CartProduct]
     }
     type CartProduct {
         id: ID!
