@@ -46,12 +46,18 @@ export const typeDefs = gql`
         market: String
         limit: Int    
     }
+    input OrderInput {
+        firstName: String!,
+        lastName: String!,
+        phone: String!,
+        products: [CartProduct]!
+    }
     type Mutation {
         addProduct(body: AddProductInput!): Product
         removeProduct(id: ID!): Product
         updateProduct(productId: ID!, body: UpdateProductInput!): Product
         updateCart(productId: ID!, amount: Int!): CartProduct
-        checkout: [Product]
+        checkout(order: OrderInput!): [Product]
     }
     type Subscription {
         cartUpdate(userId: String): CartUpdate

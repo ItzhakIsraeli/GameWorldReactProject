@@ -28,7 +28,6 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
             }
 
             if (getCookie("id_token", req.headers.cookie)) {
-                console.log('fuck me')
                 let temp = getCookie("id_token", req.headers.cookie);
                 return {userId: temp};
             } else {
@@ -60,9 +59,6 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
                 "request.credentials": "include",
             }
         }
-        // context: async (ctx: any, msg: any, args: any) => {
-        //     return getDynamicContext(ctx, msg, args);
-        // },
 
     });
     await apolloServer.start();
@@ -74,22 +70,7 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
 
 const getIdTokenFromRawHeaders = (idToken: string, rawHeaders: string[]): any => {
     let temp;
-
     temp = rawHeaders.filter((item) => item.includes(idToken))
 
     return getCookie(idToken, temp[0]);
 }
-
-const hasIdToken = (object: Object): object is Object & { id_token: string } =>
-    object.hasOwnProperty("id_token");
-
-// const getDynamicContext = async (ctx: any, msg: any, args: any) => {
-//     // ctx is the graphql-ws Context where connectionParams live
-//     if (ctx.connectionParams.authentication) {
-//         // const currentUser = await findUser(ctx.connectionParams.authentication);
-//         // change
-//         return { currentUser: 1 };
-//     }
-//     // Otherwise let our resolvers know we don't have a current user
-//     return { currentUser: null };
-// };

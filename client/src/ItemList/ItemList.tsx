@@ -12,7 +12,7 @@ export const ItemList = ({data}: ItemListProps) => {
             <List>
                 <Grid container justifyContent={'center'}>
                     {data.map((item) =>
-                        <Grid key={item._id}>
+                        <Grid key={item.id}>
                             <ListItem disablePadding>
                                 <Item {...item} />
                             </ListItem>

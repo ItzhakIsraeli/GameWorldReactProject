@@ -14,13 +14,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 
 interface ItemDialogProps {
     isOpen: boolean,
+    inCart: boolean,
     handleClose: () => void,
     item: ItemType,
     handleOnClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 
-export const ItemDialog = ({item, isOpen, handleClose, handleOnClick}: ItemDialogProps) => {
+export const ItemDialog = ({item, isOpen, inCart, handleClose, handleOnClick}: ItemDialogProps) => {
     return (
         <Dialog
             scroll={'body'}
@@ -39,7 +40,7 @@ export const ItemDialog = ({item, isOpen, handleClose, handleOnClick}: ItemDialo
                 <CardMedia
                     component="img"
                     sx={{maxHeight: 400}}
-                    image={require(`../assets/${item.image2}`)}
+                    image={require(`../assets/${item.image}`)}
                     alt={item.name}
                 />
                 <CardContent>
@@ -49,10 +50,16 @@ export const ItemDialog = ({item, isOpen, handleClose, handleOnClick}: ItemDialo
                 </CardContent>
                 <Grid container gap={3} alignItems={'center'} justifyContent={'center'}>
                     <Grid item>
-                        <Button style={{marginLeft: 10}} variant={'contained'}
-                                onClick={(e) => handleOnClick(e)}>
-                            Add Item
-                        </Button>
+                        {inCart ?
+                            <Button style={{marginLeft: 10}} variant={'contained'} color={'error'}
+                                    onClick={(e) => handleOnClick(e)}>
+                                Remove Item
+                            </Button> :
+                            <Button style={{marginLeft: 10}} variant={'contained'}
+                                    onClick={(e) => handleOnClick(e)}>
+                                Add Item
+                            </Button>
+                        }
                     </Grid>
                     <Grid item>
                         <IconButton title="הוסף למועדפים">

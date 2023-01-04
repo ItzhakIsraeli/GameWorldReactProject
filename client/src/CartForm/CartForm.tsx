@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Button,
     Dialog,
     DialogActions,
@@ -8,9 +7,6 @@ import {
     DialogTitle,
     Grid,
     List,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
     TextField,
     Typography
 } from "@mui/material";
@@ -20,6 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {itemsMiniStore, StoreState} from "../redux/miniStore";
 import {ItemType} from "../Item/Item";
 import {removeAllItems} from "../redux/itemsList/itemsListActions";
+import {CartItem, CartItemType} from "./CartItem";
 
 interface CartFormProps {
     isOpen: boolean,
@@ -34,11 +31,9 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
     const [phoneNumber, setPhoneNumber] = React.useState("");
 
     const calculateTotal = () => {
-        let val = 0;
-        items.map((item: ItemType) => {
-            val += item.price
-        })
-        return val;
+        return items.reduce((currentValue, item: CartItemType) =>
+            currentValue += item.product.price * item.amount, 0
+        )
     }
 
     const clearData = () => {
@@ -55,7 +50,7 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
 
     const handleSubscribe = () => {
         Axios.post('http://localhost:3001/checkout', {
-            firstName, lastName, phone: phoneNumber, products: items.map((item: ItemType) => item._id)
+            firstName, lastName, phone: phoneNumber, products: items.map((item: ItemType) => item.id)
 
         }).then(() => console.log(`send items: ${items}`));
         clearData();
@@ -74,12 +69,8 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
                                     To checkout this cart please enter your first name, last name and your phone number
                                 </DialogContentText>
                                 <List>
-                                    {items.map((item: ItemType) => <ListItem>
-                                            <ListItemAvatar>
-                                                <Avatar src={require(`../assets/${item.image}`)}/>
-                                            </ListItemAvatar>
-                                            <ListItemText primary={item.name} secondary={`${item.price} ₪`}/>
-                                        </ListItem>
+                                    {items.map((item: CartItemType) =>
+                                        <CartItem item={item} key={item.product.id}/>
                                     )}
                                 </List>
                                 <Typography variant={'h6'}>
