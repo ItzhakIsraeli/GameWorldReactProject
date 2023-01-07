@@ -5,7 +5,7 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import {auth} from "../Firebase/firebase";
-import {onAuthStateChanged} from 'firebase/auth';
+import {onAuthStateChanged, signOut} from 'firebase/auth';
 
 export default function LoginManager() {
     const [isOpenSignIn, setIsOpenSignIn] = React.useState<boolean>(false);
@@ -20,7 +20,19 @@ export default function LoginManager() {
                 setAuthUser(null)
             }
         })
+
+        return () => {
+            listen();
+        }
     }, [])
+
+    const userSignOut = () => {
+        signOut(auth).then(() => {
+            console.log('Sign out successfully')
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
     const openSignUpForm = () => {
         setIsOpenSignIn(false);
@@ -64,6 +76,7 @@ export default function LoginManager() {
                 <Typography variant={'h5'} fontWeight={'bold'}>
                     {`Hello ${'izhak'}`}
                 </Typography>
+                <Button onClick={userSignOut} color={'info'}>Sign Out</Button>
             </Grid>}
         </>
     )
