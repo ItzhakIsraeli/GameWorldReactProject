@@ -77,3 +77,15 @@ export const CHECKOUT = gql`
         }
     }
 `;
+
+export const SUBSCRIPTION_QUERY = gql`
+  subscription cartUpdate ($userId: String){
+    cartUpdate(userId:$userId) {
+      user
+      cartProducts {
+        id
+        amount
+      }
+    }
+  }
+`;

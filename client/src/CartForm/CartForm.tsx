@@ -24,7 +24,7 @@ interface CartFormProps {
 }
 
 export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
-    const items = useSelector((state: StoreState) => itemsMiniStore(state).ItemsList);
+    const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const dispatch = useDispatch();
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -40,7 +40,8 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
         setFirstName("");
         setLastName("");
         setPhoneNumber("");
-        dispatch(removeAllItems());
+        // TODO: add x button near to each item to remove him from the cart
+        // dispatch(removeAllItems());
     }
 
     const handleCancel = () => {

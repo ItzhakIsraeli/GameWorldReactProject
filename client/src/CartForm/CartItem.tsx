@@ -8,13 +8,21 @@ import {
     Select,
     SelectChangeEvent
 } from "@mui/material";
-import React, {useEffect} from "react";
+import React from "react";
 import {ItemType} from "../Item/Item";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {updateAmount} from "../redux/itemsList/itemsListActions";
+import {itemsMiniStore, StoreState} from "../redux/miniStore";
+import {useMutation} from "@apollo/client";
+import {UPDATE_CART} from "../GraphQl/Schema";
 
 interface CartItemProps {
     item: CartItemType
+}
+
+export interface CartProduct {
+    id: string,
+    amount: number
 }
 
 export interface CartItemType {
@@ -23,15 +31,31 @@ export interface CartItemType {
 }
 
 export const CartItem = ({item}: CartItemProps) => {
+    const [updateCart, {data}] = useMutation(UPDATE_CART);
 
     const [limit, setLimit] = React.useState(item.amount);
     const [limitArr, setLimitArr] = React.useState<number[]>();
     const dispatch = useDispatch();
-    useEffect(() => {
+    const cartList = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
+
+    React.useEffect(() => {
+        cartList.map((cartItem: CartItemType) => {
+            if (item.product.id === cartItem.product.id) {
+                setLimitArr(new Array(cartItem.product.limit).fill(0))
+            }
+        })
+    }, [cartList])
+
+    React.useEffect(() => {
         setLimitArr(new Array(item.product.limit).fill(0));
     }, [limit])
 
     const handleChange = (e: SelectChangeEvent<number | undefined>) => {
+        // updateCart({
+        //     variables: {
+        //         productId: item.product.id, amount: 1
+        //     }
+        // })
         setLimit(Number(e.target.value))
         dispatch(updateAmount(item.product, Number(e.target.value)))
     }

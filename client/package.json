@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.3",
+    "@apollo/react-hooks": "^4.0.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
@@ -22,11 +23,13 @@
     "apollo-client": "^2.6.10",
     "axios": "^1.2.1",
     "graphql": "^16.6.0",
+    "graphql-ws": "^5.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "typescript": "^4.9.3",
     "web-vitals": "^2.1.4"
   },

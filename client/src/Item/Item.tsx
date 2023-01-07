@@ -28,7 +28,7 @@ const isInCart = (id: string, items: CartItemType[]) => {
 export const Item = (item: ItemType) => {
     const [inCart, setInCart] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
-    const items = useSelector((state: StoreState) => itemsMiniStore(state).ItemsList);
+    const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const dispatch = useDispatch();
 
     const handleClose = () => setIsOpen(false)

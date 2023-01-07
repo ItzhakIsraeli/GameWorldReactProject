@@ -10,16 +10,16 @@ type UserId = string;
 type ProductId = string;
 type Cart = Record<UserId, Record<ProductId, number>>;
 
-const cart:Cart = {};
+const cart: Cart = {};
 
 export const reduceProductsLimitByCart = (userId: string, products: Product[]) => {
     let userCartAfterUpdateLimit = products;
-    if(products) {
+    if (products) {
         Object.keys(cart).map((user) => {
-            if(userId !== user) {
+            if (userId !== user) {
                 Object.keys(cart[user]).map((productId) => {
                     userCartAfterUpdateLimit = products.map((product) => {
-                        if(product.id === productId && product.limit) {
+                        if (product.id === productId && product.limit) {
                             product.limit -= cart[user][productId];
                         }
                         return product;
@@ -34,7 +34,7 @@ export const reduceProductsLimitByCart = (userId: string, products: Product[]) =
 
 export const updateCart = async (userId: string, productId: string, amount: number): Promise<CartProduct> => {
     const productLimit = await getProductLimit(productId);
-    if(productLimit && amount > productLimit) {
+    if (productLimit && amount > productLimit) {
         throw new Error(`Product ${productId} out of stock! missing ${amount - productLimit}`);
     }
     const deltaAmount = getCartProductAmount(userId, productId) - amount;
@@ -49,13 +49,13 @@ export const getCartListByUser = (userId: string): CartProduct[] =>
     }))
 
 export const releaseUserCart = (userId: string | undefined) => {
-    if(userId) {
+    if (userId) {
         let cartProducts: CartProduct[] = [];
-        if(cart[userId] && Object.keys(cart[userId]).length > 0) {
+        if (cart[userId] && Object.keys(cart[userId]).length > 0) {
             cartProducts = getCartListByUser(userId);
         }
         delete cart[userId];
-        return { user: userId, cartProducts };
+        return {user: userId, cartProducts};
     }
 }
 
@@ -65,7 +65,7 @@ const getProductLimit = async (productId: string) => {
 }
 
 export const createUserCart = (id: string) => {
-    if(!cart[id]) {
+    if (!cart[id]) {
         cart[id] = {};
     }
 }

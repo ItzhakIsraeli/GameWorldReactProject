@@ -11,7 +11,6 @@ export interface Product extends mongoose.Document{
     description: string,
     price: number,
     image: string,
-    image2: string,
     market: string,
     limit: number
 }
@@ -31,7 +30,6 @@ const ProductModelSchema = new Schema<Product>({
     description: String,
     price: Number,
     image: String,
-    image2: String,
     market: String,
     limit: Number
 });
