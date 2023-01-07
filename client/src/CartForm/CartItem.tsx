@@ -31,7 +31,11 @@ export interface CartItemType {
 }
 
 export const CartItem = ({item}: CartItemProps) => {
-    const [updateCart, {data}] = useMutation(UPDATE_CART);
+    const [updateCart, {data}] = useMutation(UPDATE_CART,{
+            variables: {
+                productId: '638e2818ce5ee77b9a86b117', amount: 7
+            }
+    });
 
     const [limit, setLimit] = React.useState(item.amount);
     const [limitArr, setLimitArr] = React.useState<number[]>();
@@ -51,11 +55,7 @@ export const CartItem = ({item}: CartItemProps) => {
     }, [limit])
 
     const handleChange = (e: SelectChangeEvent<number | undefined>) => {
-        // updateCart({
-        //     variables: {
-        //         productId: item.product.id, amount: 1
-        //     }
-        // })
+        updateCart();
         setLimit(Number(e.target.value))
         dispatch(updateAmount(item.product, Number(e.target.value)))
     }

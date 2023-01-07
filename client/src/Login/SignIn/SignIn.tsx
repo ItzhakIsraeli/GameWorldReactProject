@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {useDispatch} from "react-redux";
+import {auth} from "../../Firebase/firebase";
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 export const Copyright = () => {
     return (
@@ -32,15 +34,14 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
     const [error, setError] = React.useState(false);
     const [password, setPassword] = React.useState('');
     const dispatch = useDispatch();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // usersList.forEach(user => {
-        //     if ((user.mail === email) && user.password === password) {
-        //         dispatch(setCurrentUser(user));
-        //         handleClose();
-        //     }
-        // })
-
+        signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
+            console.log(userCredentials)
+        }).catch((error) => {
+            console.log(error)
+        });
         setError(true);
     };
 
@@ -85,7 +86,9 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             id="password"
                             autoComplete="current-password"
                         />
-                        {error && <Typography color={'red'}>Sorry your Username and/or Password are incorrect. please try again </Typography>
+                        {error &&
+                            <Typography color={'red'}>Sorry your Username and/or Password are incorrect. please try
+                                again </Typography>
                         }
                         <Button
                             type="submit"
@@ -96,14 +99,14 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             Sing In
                         </Button>
                         <Grid container>
-                            <Grid item >
+                            <Grid item>
                                 <Button>
                                     <Typography variant={'caption'}>
                                         Forgot password ?
                                     </Typography>
                                 </Button>
                             </Grid>
-                            <Grid item >
+                            <Grid item>
                                 <Button onClick={openSignUp}>
                                     <Typography variant={'caption'}>
                                         You haven't account? create now !

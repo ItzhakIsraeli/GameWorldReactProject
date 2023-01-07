@@ -4,10 +4,23 @@ import SignUp from "./SingUp/SignUp";
 import React from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import {auth} from "../Firebase/firebase";
+import {onAuthStateChanged} from 'firebase/auth';
 
 export default function LoginManager() {
     const [isOpenSignIn, setIsOpenSignIn] = React.useState<boolean>(false);
     const [isOpenSignUp, setIsOpenSignUp] = React.useState<boolean>(false);
+    const [authUser, setAuthUser] = React.useState<any>(null);
+
+    React.useEffect(() => {
+        const listen = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setAuthUser(user);
+            } else {
+                setAuthUser(null)
+            }
+        })
+    }, [])
 
     const openSignUpForm = () => {
         setIsOpenSignIn(false);
@@ -37,7 +50,7 @@ export default function LoginManager() {
                     <SignUp handleClose={handleSignUpClose} openSignIn={openSignInForm}/>
                 </Dialog>
             </Box>
-            {<Grid container gap={2} justifyContent={'end'}>
+            {!authUser && <Grid container gap={2} justifyContent={'end'}>
                 <Grid item>
                     <Button size={'large'} variant="contained" color={'info'}
                             onClick={() => setIsOpenSignIn(true)}>Sing In</Button>
@@ -47,7 +60,7 @@ export default function LoginManager() {
                             onClick={() => setIsOpenSignUp(true)}>Sing Up</Button>
                 </Grid>
             </Grid>}
-            {false && <Grid container gap={2} justifyContent={'end'}>
+            {authUser && <Grid container gap={2} justifyContent={'end'}>
                 <Typography variant={'h5'} fontWeight={'bold'}>
                     {`Hello ${'izhak'}`}
                 </Typography>

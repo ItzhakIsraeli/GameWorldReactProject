@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {Copyright} from "../SignIn/SignIn";
-import Axios from "axios";
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth} from "../../Firebase/firebase";
 
 const theme = createTheme();
 
@@ -20,6 +21,13 @@ interface SignUpProps {
     handleClose: () => void,
     openSignIn: () => void
 }
+// Axios.post('http://localhost:3001/singup', {
+//     firstName, lastName, phone, age, state, address, email, password
+//
+// }).then(() => {
+//     handleClose()
+//     console.log(`send items: ${firstName + lastName + phone + age + state + address + email + password}`)
+// })
 
 export default function SignUp({handleClose, openSignIn}: SignUpProps) {
     const [firstName, setFirstName] = React.useState('');
@@ -33,13 +41,12 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        Axios.post('http://localhost:3001/singup', {
-            firstName, lastName, phone, age, state, address, email, password
 
-        }).then(() => {
-            handleClose()
-            console.log(`send items: ${firstName + lastName + phone + age + state + address + email + password}`)
-        })
+        createUserWithEmailAndPassword(auth,email,password).then((userCredentials) => {
+            console.log(userCredentials)
+        }).catch((error) => {
+            console.log(error)
+        });
     };
 
     return (
