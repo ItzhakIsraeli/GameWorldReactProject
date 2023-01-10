@@ -1,5 +1,5 @@
 import {
-    Button,
+    Button, Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -17,6 +17,7 @@ import {itemsMiniStore, StoreState} from "../redux/miniStore";
 import {ItemType} from "../Item/Item";
 import {removeAllItems} from "../redux/itemsList/itemsListActions";
 import {CartItem, CartItemType} from "./CartItem";
+import {TransitionGroup} from 'react-transition-group';
 
 interface CartFormProps {
     isOpen: boolean,
@@ -40,8 +41,6 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
         setFirstName("");
         setLastName("");
         setPhoneNumber("");
-        // TODO: add x button near to each item to remove him from the cart
-        // dispatch(removeAllItems());
     }
 
     const handleCancel = () => {
@@ -67,52 +66,20 @@ export const CartForm = ({isOpen, handleClose}: CartFormProps) => {
                         <>
                             <DialogContent>
                                 <DialogContentText>
-                                    To checkout this cart please enter your first name, last name and your phone number
+                                    Choose the amount of the items you wish to buy 🛒...
                                 </DialogContentText>
                                 <List>
-                                    {items.map((item: CartItemType) =>
-                                        <CartItem item={item} key={item.product.id}/>
-                                    )}
+                                    <TransitionGroup>
+                                        {items.map((item: CartItemType) =>
+                                            <Collapse key={item.product.id}>
+                                                <CartItem item={item} key={item.product.id}/>
+                                            </Collapse>
+                                        )}
+                                    </TransitionGroup>
                                 </List>
                                 <Typography variant={'h6'}>
                                     Total Price of: {calculateTotal()} ₪
                                 </Typography>
-
-                                <Grid container gap={3}>
-                                    <Grid item>
-                                        <TextField
-                                            onChange={(e) => setFirstName(e.target.value)}
-                                            value={firstName}
-                                            autoFocus
-                                            margin="dense"
-                                            id="firstname"
-                                            label="First name"
-                                            type="name"
-                                            variant="standard"/>
-                                    </Grid>
-                                    <Grid item>
-                                        <TextField
-                                            onChange={(e) => setLastName(e.target.value)}
-                                            value={lastName}
-                                            autoFocus
-                                            margin="dense"
-                                            id="lastname"
-                                            label="Last name"
-                                            type="name"
-                                            variant="standard"/>
-                                    </Grid>
-                                    <Grid item>
-                                        <TextField
-                                            onChange={(e) => setPhoneNumber(e.target.value)}
-                                            value={phoneNumber}
-                                            autoFocus
-                                            margin="dense"
-                                            id="phone"
-                                            label="Phone number"
-                                            type="phone"
-                                            variant="standard"/>
-                                    </Grid>
-                                </Grid>
                             </DialogContent>
                         </>
                         :

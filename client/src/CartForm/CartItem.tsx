@@ -1,6 +1,6 @@
 import {
-    Avatar,
-    FormControl,
+    Avatar, Box,
+    FormControl, Grid, IconButton, InputLabel,
     ListItem,
     ListItemAvatar,
     ListItemText,
@@ -11,10 +11,11 @@ import {
 import React from "react";
 import {ItemType} from "../Item/Item";
 import {useDispatch, useSelector} from "react-redux";
-import {updateAmount} from "../redux/itemsList/itemsListActions";
+import {removeItem, updateAmount} from "../redux/itemsList/itemsListActions";
 import {itemsMiniStore, StoreState} from "../redux/miniStore";
 import {useMutation} from "@apollo/client";
 import {UPDATE_CART} from "../GraphQl/Schema";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 interface CartItemProps {
     item: CartItemType
@@ -30,11 +31,22 @@ export interface CartItemType {
     amount: number
 }
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 100,
+        },
+    },
+};
+
 export const CartItem = ({item}: CartItemProps) => {
-    const [updateCart, {data}] = useMutation(UPDATE_CART,{
-            variables: {
-                productId: '638e2818ce5ee77b9a86b117', amount: 7
-            }
+    const [updateCart, {data}] = useMutation(UPDATE_CART, {
+        variables: {
+            productId: '638e2818ce5ee77b9a86b117', amount: 7
+        }
     });
 
     const [limit, setLimit] = React.useState(item.amount);
@@ -62,22 +74,28 @@ export const CartItem = ({item}: CartItemProps) => {
 
     return (
         <ListItem>
-            <ListItemAvatar>
-                <Avatar src={require(`../assets/${item.product.image}`)}/>
-            </ListItemAvatar>
-            <ListItemText primary={item.product.name} secondary={`${item.product.price} ₪`}/>
-            <FormControl sx={{m: 1, minWidth: 120}} size="small">
-                <Select
-                    value={limit}
-                    label={limit}
-                    onChange={(e) => handleChange(e)}
-                >
-                    {
-                        limitArr?.map((item, key) =>
-                            <MenuItem value={key + 1} key={key}>{key + 1} </MenuItem>
-                        )
-                    }
-                </Select>
-            </FormControl>
+            <Grid container justifyContent={'center'} alignItems={'center'} gap={1}>
+                <IconButton title="Remove Item" onClick={()=>dispatch(removeItem(item.product))}>
+                    <DeleteOutlineIcon fontSize={'medium'} color={'error'}/>
+                </IconButton>
+                <ListItemAvatar>
+                    <Avatar src={require(`../assets/${item.product.image}`)}/>
+                </ListItemAvatar>
+                <ListItemText primary={item.product.name} secondary={`${item.product.price} ₪`}/>
+                <FormControl sx={{m: 1, minWidth: 100, justifyContent: 'center'}} size="small">
+                    <Select
+                        MenuProps={MenuProps}
+                        value={limit}
+                        label={limit}
+                        onChange={(e) => handleChange(e)}
+                    >
+                        {
+                            limitArr?.map((item, key) =>
+                                <MenuItem value={key + 1} key={key}>{key + 1} </MenuItem>
+                            )
+                        }
+                    </Select>
+                </FormControl>
+            </Grid>
         </ListItem>)
 }

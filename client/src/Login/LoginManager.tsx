@@ -1,4 +1,4 @@
-import {Button, Dialog, Typography} from "@mui/material";
+import {Button, Dialog, IconButton, Menu, MenuItem, Tooltip, Typography} from "@mui/material";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SingUp/SignUp";
 import React from "react";
@@ -6,12 +6,13 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import {auth} from "../Firebase/firebase";
 import {onAuthStateChanged, signOut} from 'firebase/auth';
+import {SideBarList} from "../SideBar/SideBar";
 
 export default function LoginManager() {
     const [isOpenSignIn, setIsOpenSignIn] = React.useState<boolean>(false);
     const [isOpenSignUp, setIsOpenSignUp] = React.useState<boolean>(false);
     const [authUser, setAuthUser] = React.useState<any>(null);
-
+    const [anchorElUser, setAnchorElUser] = React.useState<any>(null);
     React.useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -32,6 +33,7 @@ export default function LoginManager() {
         }).catch((error) => {
             console.log(error)
         })
+        handleCloseUserMenu();
     }
 
     const openSignUpForm = () => {
@@ -51,6 +53,14 @@ export default function LoginManager() {
     const handleSignUpClose = () => {
         setIsOpenSignUp(false);
     }
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
     return (
         <>
@@ -73,10 +83,38 @@ export default function LoginManager() {
                 </Grid>
             </Grid>}
             {authUser && <Grid container gap={2} justifyContent={'end'}>
-                <Typography variant={'h5'} fontWeight={'bold'}>
-                    {`Hello ${'izhak'}`}
-                </Typography>
-                <Button onClick={userSignOut} color={'info'}>Sign Out</Button>
+                <Box sx={{flexGrow: 0}}>
+                    <SideBarList/>
+                    <Menu
+                        sx={{mt: '45px'}}
+                        id="menu-appbar"
+                        anchorEl={anchorElUser}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: `right`,
+                        }}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                        }}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                    >
+                        <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">Profile</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">My Orders</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleCloseUserMenu}>
+                            <Typography textAlign="center">Favorites</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={userSignOut}>
+                            <Typography textAlign="center">Logout</Typography>
+                        </MenuItem>
+                    </Menu>
+                </Box>
             </Grid>}
         </>
     )

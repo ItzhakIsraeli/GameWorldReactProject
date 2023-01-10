@@ -21,13 +21,6 @@ interface SignUpProps {
     handleClose: () => void,
     openSignIn: () => void
 }
-// Axios.post('http://localhost:3001/singup', {
-//     firstName, lastName, phone, age, state, address, email, password
-//
-// }).then(() => {
-//     handleClose()
-//     console.log(`send items: ${firstName + lastName + phone + age + state + address + email + password}`)
-// })
 
 export default function SignUp({handleClose, openSignIn}: SignUpProps) {
     const [firstName, setFirstName] = React.useState('');
@@ -42,11 +35,13 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        createUserWithEmailAndPassword(auth,email,password).then((userCredentials) => {
+        createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
             console.log(userCredentials)
         }).catch((error) => {
             console.log(error)
         });
+
+        // TODO: add here mutation and add the extra data on the user to the DB
     };
 
     return (

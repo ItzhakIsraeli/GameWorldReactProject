@@ -43,3 +43,17 @@ export const updateAmount = (product: ItemType, amount: number) => {
         payload: {product, amount}
     }
 }
+
+export const addItemToFavorites = (productId: string) => {
+    return {
+        type: ItemsListTypes.Add_ITEM_TO_FAVORITES,
+        payload: productId
+    }
+}
+
+export const removeItemFromFavorites = (productId: string) => {
+    return {
+        type: ItemsListTypes.REMOVE_ITEM_FROM_FAVORITES,
+        payload: {productId}
+    }
+}

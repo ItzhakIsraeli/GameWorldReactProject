@@ -39,10 +39,11 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
             console.log(userCredentials)
+            handleClose();
         }).catch((error) => {
-            console.log(error)
+            console.log(error);
+            setError(true);
         });
-        setError(true);
     };
 
     return (

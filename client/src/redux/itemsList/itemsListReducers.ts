@@ -14,12 +14,14 @@ export interface Product {
 
 export interface ItemsState {
     CartList: [],
-    Products: []
+    Products: [],
+    Favorites: []
 }
 
 interface actionI {
     type: string,
     payload: {
+        productId: string,
         product: ItemType,
         amount: number,
         cartProducts: CartProduct[],
@@ -29,7 +31,8 @@ interface actionI {
 
 const initialState: ItemsState = {
     CartList: [],
-    Products: []
+    Products: [],
+    Favorites: []
 };
 
 const itemsListReducer = (state: ItemsState = initialState, action: actionI) => {
@@ -47,33 +50,36 @@ const itemsListReducer = (state: ItemsState = initialState, action: actionI) => 
         case ItemsListTypes.UPDATE_PRODUCT_LIMIT:
             return {
                 ...state,
-                Products: state.Products.map((product:Product)=>{
-                    return action.payload.cartProducts.map((item)=>{
-                        if (product.id === item.id){
-                            product= {...product,limit: product.limit + item.amount}
+                Products: state.Products.map((product: Product) => {
+                    return action.payload.cartProducts.map((item) => {
+                        if (product.id === item.id) {
+                            product = {...product, limit: product.limit + item.amount}
                         }
                         return product
                     })
                 }).flat(),
-                CartList: state.CartList.map((cartItem:CartItemType)=>{
-                    return action.payload.cartProducts.map((item)=>{
-                        if (cartItem.product.id === item.id){
-                            cartItem= {...cartItem,product:{...cartItem.product,limit: cartItem.product.limit + item.amount}}
+                CartList: state.CartList.map((cartItem: CartItemType) => {
+                    return action.payload.cartProducts.map((item) => {
+                        if (cartItem.product.id === item.id) {
+                            cartItem = {
+                                ...cartItem,
+                                product: {...cartItem.product, limit: cartItem.product.limit + item.amount}
+                            }
                         }
                         return cartItem
                     })
                 }).flat()
             };
-            // case ItemsListTypes.UPDATE_PRODUCT_LIMIT:
-            // return {
-            //     ...state,
-            //     Products: state.Products.map((prod:Product)=>{
-            //         if (prod.id === action.payload.cartProducts[0].id){
-            //            prod= {...prod,limit: prod.limit + action.payload.cartProducts[0].amount}
-            //         }
-            //         return prod
-            //     })
-            // };
+        // case ItemsListTypes.UPDATE_PRODUCT_LIMIT:
+        // return {
+        //     ...state,
+        //     Products: state.Products.map((prod:Product)=>{
+        //         if (prod.id === action.payload.cartProducts[0].id){
+        //            prod= {...prod,limit: prod.limit + action.payload.cartProducts[0].amount}
+        //         }
+        //         return prod
+        //     })
+        // };
         case ItemsListTypes.UPDATE_ITEM_IN_CART:
             return {
                 ...state,
@@ -97,6 +103,20 @@ const itemsListReducer = (state: ItemsState = initialState, action: actionI) => 
                 ...state,
                 CartList: []
             }
+        case ItemsListTypes.Add_ITEM_TO_FAVORITES:
+            return {
+                ...state,
+                Favorites: [...state.Favorites, action.payload]
+            }
+
+        case ItemsListTypes.REMOVE_ITEM_FROM_FAVORITES:
+            return {
+                ...state,
+                Favorites: state.Favorites.filter((favoriteId: string) => {
+                    return favoriteId !== action.payload.productId
+                })
+            }
+
         default:
             return state
     }

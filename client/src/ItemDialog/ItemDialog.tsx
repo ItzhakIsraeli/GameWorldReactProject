@@ -17,11 +17,13 @@ interface ItemDialogProps {
     inCart: boolean,
     handleClose: () => void,
     item: ItemType,
-    handleOnClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    handleOnClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    addToFavorite: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    inFavorites: boolean
 }
 
 
-export const ItemDialog = ({item, isOpen, inCart, handleClose, handleOnClick}: ItemDialogProps) => {
+export const ItemDialog = ({item, isOpen, inCart, handleClose, handleOnClick, addToFavorite,inFavorites}: ItemDialogProps) => {
     return (
         <Dialog
             scroll={'body'}
@@ -62,8 +64,8 @@ export const ItemDialog = ({item, isOpen, inCart, handleClose, handleOnClick}: I
                         }
                     </Grid>
                     <Grid item>
-                        <IconButton title="הוסף למועדפים">
-                            <FavoriteIcon color={false ? 'error' : "inherit"}/>
+                        <IconButton title="הוסף למועדפים" onClick={(e) => addToFavorite(e)}>
+                            <FavoriteIcon color={inFavorites ? 'error' : "inherit"}/>
                         </IconButton>
                     </Grid>
                     <Grid item>
