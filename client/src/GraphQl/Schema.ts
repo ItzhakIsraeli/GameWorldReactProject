@@ -1,8 +1,8 @@
 import {gql, useQuery} from '@apollo/client';
 
 export const GET_ALL_PRODUCTS = gql`
-    query GetAllProducts {
-        getProducts{
+    query GetAllProducts($userId: String!) {
+        getProducts(userId: $userId){
             id
             name
             description
@@ -27,8 +27,8 @@ export const GET_PRODUCT = gql`
 `;
 
 export const UPDATE_CART = gql`
-    mutation UpdateCart($productId: ID!, $amount: Int!){
-        updateCart(productId: $productId, amount: $amount){
+    mutation UpdateCart($userId: String!, $productId: ID!, $amount: Int!){
+        updateCart(userId: $userId, productId: $productId, amount: $amount){
             id
             amount
         }
@@ -66,8 +66,8 @@ export const typeDefs = gql`
 `;
 
 export const CHECKOUT = gql`
-    mutation checkout($order: Order!){
-        checkout(order: $order){
+    mutation checkout($userId: String!, $order: Order!){
+        checkout(userId: $userId, order: $order){
             id
             name
             description

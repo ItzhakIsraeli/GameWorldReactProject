@@ -7,16 +7,21 @@ import Box from "@mui/material/Box";
 import {auth} from "../Firebase/firebase";
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {SideBarList} from "../SideBar/SideBar";
+import {useDispatch} from "react-redux";
+import {addUserData} from "../redux/userData/userDataActions";
 
 export default function LoginManager() {
     const [isOpenSignIn, setIsOpenSignIn] = React.useState<boolean>(false);
     const [isOpenSignUp, setIsOpenSignUp] = React.useState<boolean>(false);
     const [authUser, setAuthUser] = React.useState<any>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<any>(null);
+    const dispatch = useDispatch();
     React.useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setAuthUser(user);
+                console.log('user', user, user.email, user.uid)
+                dispatch(addUserData({email: user.email, userId: user.uid}));
             } else {
                 setAuthUser(null)
             }

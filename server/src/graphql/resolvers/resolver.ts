@@ -7,10 +7,9 @@ import {Order, Product} from "../../db/store.schema";
 import {pubsub} from "../index";
 import {withFilter} from "graphql-subscriptions";
 
-const getProducts = async (parent: any, args: Object, req: any) => {
+const getProducts = async (parent: any, args: {userId: string}, req: any) => {
     const products = await DAL.getAllProducts();
-    console.log(req)
-    return Cart.reduceProductsLimitByCart(req.userId, products);
+    return Cart.reduceProductsLimitByCart(args.userId, products);
 };
 
 const getProduct = async (parent: any, args: { id: ObjectId }) => {
@@ -39,15 +38,15 @@ const updateProduct = async (parent: any, args: { id: ObjectId, body: Partial<Pr
     return result;
 };
 
-const updateCart = async (parent: any, args: { productId: string, amount: number }, req: any) => {
-    const userId = req.userId;
+const updateCart = async (parent: any, args: {userId: string, productId: string, amount: number }, req: any) => {
+    const userId = args.userId;
     const delta = await Cart.updateCart(userId, args.productId, args.amount);
     await pubsub.publish("CART_UPDATE", {cartUpdate: {user: userId, cartProducts: [delta]}});
     return {_id: args.productId, amount: args.amount};
 };
 
-const checkout = async (parent: any, args: { order: Order }, req: any) => {
-    const userId = req.userId;
+const checkout = async (parent: any, args: { userId: string, order: Order }, req: any) => {
+    const userId = args.userId;
     await DAL.addOrder(args.order);
     const userCart = await DAL.checkout(args.order.products);
     const cartAfterUpdate = Cart.reduceProductsLimitByCart(userId, userCart);

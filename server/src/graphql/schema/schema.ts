@@ -29,7 +29,7 @@ export const typeDefs = gql`
         cartProducts: [CartProduct]!
     }
     type Query {
-        getProducts: [Product]
+        getProducts(userId: String!): [Product]
         getProduct(id: ID): Product
     }
     input AddProductInput {
@@ -60,8 +60,8 @@ export const typeDefs = gql`
         addProduct(body: AddProductInput!): Product
         removeProduct(id: ID!): Product
         updateProduct(productId: ID!, body: UpdateProductInput!): Product
-        updateCart(productId: ID!, amount: Int!): CartProduct
-        checkout(order: OrderInput!): [Product]
+        updateCart(userId: String!, productId: ID!, amount: Int!): CartProduct
+        checkout(userId: String!, order: OrderInput!): [Product]
     }
     type Subscription {
         cartUpdate(userId: String): CartUpdate

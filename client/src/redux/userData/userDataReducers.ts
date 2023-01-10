@@ -1,7 +1,8 @@
 import {UserDataTypes} from "./userDataTypes";
 
 export interface UserDataType {
-    firstName: string
+    userId: string,
+    email: string | null
 }
 
 export interface UserDataState {
@@ -18,7 +19,8 @@ interface actionI {
 const initialState: UserDataState = {
     userData:
         {
-            firstName: ''
+            userId: '',
+            email: ''
         }
 };
 
