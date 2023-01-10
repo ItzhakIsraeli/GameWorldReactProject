@@ -31,17 +31,21 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
     const [age, setAge] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [state, setState] = React.useState('');
+    const [isError, setIsError] = React.useState(false);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-            console.log(userCredentials)
-        }).catch((error) => {
-            console.log(error)
-        });
+            console.log(userCredentials);
+            setIsError(false);
+            handleClose();
+            // TODO: add here mutation and add the extra data on the user to the DB
 
-        // TODO: add here mutation and add the extra data on the user to the DB
+        }).catch((error) => {
+            console.log(error);
+            setIsError(true);
+        });
     };
 
     return (
@@ -167,6 +171,11 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
                                 </Grid>
                             </Grid>
                         </Grid>
+                        {isError &&
+                            <Typography color={'error'}>
+                                The Email already exist in the system.
+                                Try to Log In or Sing Up with different Email.
+                            </Typography>}
                         <Button
                             type="submit"
                             fullWidth

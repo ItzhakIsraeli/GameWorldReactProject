@@ -39,6 +39,10 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
             console.log(userCredentials)
+
+            // TODO: add here query from the mongo by email to get all the data from the mongo
+            //       after that => put the userData in the redux !
+
             handleClose();
         }).catch((error) => {
             console.log(error);

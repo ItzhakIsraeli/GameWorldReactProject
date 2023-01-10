@@ -84,36 +84,7 @@ export default function LoginManager() {
             </Grid>}
             {authUser && <Grid container gap={2} justifyContent={'end'}>
                 <Box sx={{flexGrow: 0}}>
-                    <SideBarList/>
-                    <Menu
-                        sx={{mt: '45px'}}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: `right`,
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                    >
-                        <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">Profile</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">My Orders</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={handleCloseUserMenu}>
-                            <Typography textAlign="center">Favorites</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={userSignOut}>
-                            <Typography textAlign="center">Logout</Typography>
-                        </MenuItem>
-                    </Menu>
+                    <SideBarList userSignOut={userSignOut}/>
                 </Box>
             </Grid>}
         </>

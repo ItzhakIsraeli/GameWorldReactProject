@@ -24,31 +24,25 @@ const DrawerHeader = styled('div')(({theme}) => ({
     justifyContent: 'flex-start',
 }));
 
-export const SideBarList = () => {
+interface SideBarProps {
+    userSignOut: () => void
+}
+
+export const SideBarList = ({userSignOut}: SideBarProps) => {
     const dispatch = useDispatch()
     const theme = useTheme();
     const [isOpen, setIsOpen] = React.useState(false);
-    const [isNeedAlert, setIsNeedAlert] = React.useState(false);
 
     const handleClick = () => {
-        if (true) {
-            setIsOpen(true);
-        } else {
-            setIsOpen(false);
-            setIsNeedAlert(true);
-        }
-    }
-
-    const handleClose = () => {
-        setIsNeedAlert(false);
+        setIsOpen(true);
     }
 
     const handleLogOut = () => {
-        // dispatch(setCurrentUser(false))
+        userSignOut();
         dispatch(setCurrentPage(CURRENT_PAGE.HOME_PAGE))
     }
 
-    const handleHomeClick = ()=>{
+    const handleHomeClick = () => {
         setIsOpen(false);
         dispatch(setCurrentPage(CURRENT_PAGE.HOME_PAGE))
     }
