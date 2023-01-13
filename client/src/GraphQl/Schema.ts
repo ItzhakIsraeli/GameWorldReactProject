@@ -1,7 +1,7 @@
 import {gql, useQuery} from '@apollo/client';
 
 export const GET_ALL_PRODUCTS = gql`
-    query GetAllProducts($userId: String!) {
+    query GetAllProducts($userId: String) {
         getProducts(userId: $userId){
             id
             name

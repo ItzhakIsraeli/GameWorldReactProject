@@ -2,6 +2,7 @@ import {UserDataTypes} from "./userDataTypes";
 
 export interface UserDataType {
     userId: string,
+    fireBaseId: string,
     email: string | null
 }
 
@@ -12,7 +13,9 @@ export interface UserDataState {
 interface actionI {
     type: string,
     payload: {
-        data: UserDataType
+        fireBaseId: string,
+        email: string | null,
+        userId: string
     }
 }
 
@@ -20,21 +23,32 @@ const initialState: UserDataState = {
     userData:
         {
             userId: '',
+            fireBaseId: '',
             email: ''
         }
 };
 
-const filterOptionsReducer = (state: UserDataState = initialState, action: actionI) => {
+const userDataReducers = (state: UserDataState = initialState, action: actionI) => {
     switch (action.type) {
         case UserDataTypes.ADD_USER_DATA:
             return {
                 ...state,
-                userData: action.payload.data
+                userData: {
+                    fireBaseId: action.payload.fireBaseId,
+                    email: action.payload.email,
+                    userId: state.userData.userId
+                }
             };
-
+        case UserDataTypes.ADD_USER_ID:
+            return {
+                ...state,
+                userData: {
+                    userId: action.payload
+                }
+            }
         default:
             return state
     }
 }
 
-export default filterOptionsReducer;
+export default userDataReducers;

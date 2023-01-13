@@ -33,6 +33,11 @@ export const reduceProductsLimitByCart = (userId: string, products: Product[]) =
 
 
 export const updateCart = async (userId: string, productId: string, amount: number): Promise<CartProduct> => {
+
+    if (userId && !cart[userId]){
+            createUserCart(userId);
+    }
+
     const productLimit = await getProductLimit(productId);
     if (productLimit && amount > productLimit) {
         throw new Error(`Product ${productId} out of stock! missing ${amount - productLimit}`);
@@ -65,6 +70,7 @@ const getProductLimit = async (productId: string) => {
 }
 
 export const createUserCart = (id: string) => {
+    console.log(cart)
     if (!cart[id]) {
         cart[id] = {};
     }

@@ -7,28 +7,38 @@ import {
     filterOptionsMiniStore,
     itemsMiniStore,
     StoreState,
-    useDataMiniStore
+    userDataMiniStore
 } from "../redux/miniStore";
 import {ItemType} from "../Item/Item";
-import {GET_ALL_PRODUCTS} from "../GraphQl/Schema";
-import {client} from "../App";
-import {loadProducts} from "../redux/itemsList/itemsListActions";
-import {CartUpdateSubscription} from "../GraphQl/Util";
+import {GET_ALL_PRODUCTS, SUBSCRIPTION_QUERY} from "../GraphQl/Schema";
+import {loadProducts, updateProductLimit} from "../redux/itemsList/itemsListActions";
 import {CURRENT_PAGE} from "../redux/appSettings/appSettingsReducers";
-import {getAuth} from "firebase/auth";
+import {useSubscription} from "@apollo/client";
+import {client} from "../App";
 
 export default function Main() {
     const [final, setFinal] = React.useState([]);
     const searchText = useSelector((state: StoreState) => filterOptionsMiniStore(state).searchText);
-    const user = useSelector((state: StoreState) => useDataMiniStore(state).userData);
+    const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
     const items = useSelector((state: StoreState) => itemsMiniStore(state).Products);
     const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
     const currentPage = useSelector((state: StoreState) => appSettingsMiniStore(state).currentPage);
     const [favoritesList, setFavoritesList] = React.useState(items.filter((item: ItemType) => favorites?.includes(item.id)));
     const dispatch = useDispatch();
 
-    CartUpdateSubscription(dispatch);
-    console.log('auth:', user);
+    const {data, loading} = useSubscription(
+        SUBSCRIPTION_QUERY,
+        {
+            variables: {
+                userId: user.userId
+            },
+            onSubscriptionData: (data) => {
+                console.log(data)
+                data?.subscriptionData?.data?.cartUpdate && dispatch(updateProductLimit(data?.subscriptionData?.data?.cartUpdate))
+            }
+        }
+    );
+
 
     React.useEffect(() => {
         client
@@ -38,27 +48,30 @@ export default function Main() {
                     userId: user.userId
                 }
             })
-            .then((result) => {
+            .then((result: any) => {
+                    console.log('ImMain client effect')
                     dispatch(loadProducts(result.data.getProducts));
                     setFinal(result.data.getProducts);
                 }
             );
-
     }, []);
+
 
     React.useEffect(() => {
         if (items.length > 0) {
             const newList = items.filter((item: ItemType) => item.name.toLowerCase().includes(searchText.toLowerCase()));
             setFinal(newList);
-            setFavoritesList(newList.filter((item: ItemType) => favorites?.includes(item.id)))
+            // setFavoritesList(newList.filter((item: ItemType) => favorites?.includes(item.id)));
         }
     }, [searchText]);
-
-    React.useEffect(() => {
-        if (items.length > 0) {
-            setFinal(items)
-        }
-    }, [items])
+    //
+    // React.useEffect(() => {
+    //     console.log('ImMain item effect')
+    //     if (items.length > 0) {
+    //         setFavoritesList(items.filter((item: ItemType) => favorites?.includes(item.id)))
+    //         setFinal(items)
+    //     }
+    // }, [items])
 
     return (
         <>

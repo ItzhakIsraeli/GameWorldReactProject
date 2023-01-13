@@ -103,6 +103,8 @@ const itemsListReducer = (state: ItemsState = initialState, action: actionI) => 
                 ...state,
                 CartList: []
             }
+
+        // TODO: add the whole item to the favorites list and not only the id
         case ItemsListTypes.Add_ITEM_TO_FAVORITES:
             return {
                 ...state,

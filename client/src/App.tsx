@@ -1,18 +1,28 @@
 import React from 'react';
 import Main from "./Main/Main";
-import {ApolloClient, HttpLink, InMemoryCache, split} from "@apollo/client";
+import {ApolloClient, HttpLink, InMemoryCache, split, useSubscription} from "@apollo/client";
 import {getMainDefinition} from "@apollo/client/utilities";
-import {typeDefs} from "./GraphQl/Schema";
+import {SUBSCRIPTION_QUERY, typeDefs} from "./GraphQl/Schema";
 import {WebSocketLink} from "@apollo/client/link/ws";
 import {ApolloProvider} from "@apollo/react-hooks";
+import {updateProductLimit} from "./redux/itemsList/itemsListActions";
+import {useDispatch} from "react-redux";
+import {addUserData, addUserId} from "./redux/userData/userDataActions";
+
+const userId = Date.now().toString();
+console.log('Tikuf', userId);
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:3001/graphql'
+    uri: 'http://localhost:3001/graphql',
+    // credentials: 'include'
 });
 
 const wsLink = new WebSocketLink({
     uri: 'ws://localhost:3001/graphql',
     options: {
+        connectionParams: {
+            userId
+        },
         reconnect: true
     }
 })
@@ -37,6 +47,12 @@ export const client = new ApolloClient({
 });
 
 function App() {
+
+    const dispatch = useDispatch();
+    React.useEffect(() => {
+        dispatch(addUserId(userId))
+    }, [])
+
     return (
         <ApolloProvider client={client}>
             <Main/>

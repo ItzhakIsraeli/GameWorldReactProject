@@ -30,18 +30,10 @@ const isInCart = (id: string, items: CartItemType[]) => {
     return include;
 }
 
-const isInFavorites = (id: string, items: string[]) => {
-    let include = false;
-    items.forEach((itemId) => {
-        if (itemId === id) include = true;
-    })
-    return include;
-}
-
 export const Item = (item: ItemType) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
-    const favorites = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
+    const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
     const dispatch = useDispatch();
 
     const handleClose = () => setIsOpen(false)
@@ -56,7 +48,7 @@ export const Item = (item: ItemType) => {
     }
 
     const addToFavorites = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        if (isInFavorites(item.id, favorites)) {
+        if (favorites.includes(item.id)) {
             dispatch(removeItemFromFavorites(item.id));
         } else {
             dispatch(addItemToFavorites(item.id));
@@ -67,7 +59,7 @@ export const Item = (item: ItemType) => {
     return (<>
             <ItemDialog isOpen={isOpen} inCart={isInCart(item.id, items)} handleClose={handleClose} item={item}
                         handleOnClick={handleOnClick} addToFavorite={addToFavorites}
-                        inFavorites={isInFavorites(item.id, favorites)}/>
+                        inFavorites={favorites.includes(item.id)}/>
             <ListItemButton onClick={() => setIsOpen(true)}>
                 <Card sx={{display: 'flex', width: 500, height: 200}}>
                     <Grid container justifyContent={'center'} gap={12}>
@@ -93,7 +85,7 @@ export const Item = (item: ItemType) => {
                                         </Button>
                                     }
                                     <IconButton title="Add To Favorites" onClick={(event) => addToFavorites(event)}>
-                                        <FavoriteIcon color={isInFavorites(item.id, favorites) ? 'error' : "inherit"}/>
+                                        <FavoriteIcon color={favorites.includes(item.id) ? 'error' : "inherit"}/>
                                     </IconButton>
                                 </Grid>
                             </Box>

@@ -21,7 +21,7 @@ export default function LoginManager() {
             if (user) {
                 setAuthUser(user);
                 console.log('user', user, user.email, user.uid)
-                dispatch(addUserData({email: user.email, userId: user.uid}));
+                dispatch(addUserData({email: user.email, fireBaseId: user.uid}));
             } else {
                 setAuthUser(null)
             }

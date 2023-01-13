@@ -1,7 +1,5 @@
 import * as DAL from "../../db/store.dal";
 import * as Cart from "../cart";
-import {getCartListByUser} from "../cart";
-import {Request} from "express";
 import {ObjectId} from "mongoose";
 import {Order, Product} from "../../db/store.schema";
 import {pubsub} from "../index";

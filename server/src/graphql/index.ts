@@ -8,16 +8,6 @@ import {createUserCart, releaseUserCart} from "./cart";
 
 export const pubsub = new PubSub();
 
-export const getCookie = (cookieName: string, cookie: string | undefined) => {
-    let final = undefined;
-
-    if (cookie) {
-        let temp = cookie!.split(";");
-        final = temp.filter((item) => item.includes(cookieName))[0].split("=")[1];
-    }
-    return final;
-}
-
 export const startApolloServer = async (httpServer: Server, app: Express): Promise<ApolloServer> => {
     const apolloServer = new ApolloServer({
         typeDefs,
@@ -26,25 +16,18 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
             if (connection) {
                 return connection.context
             }
-
-            if (getCookie("id_token", req.headers.cookie)) {
-                let temp = getCookie("id_token", req.headers.cookie);
-                return {userId: temp};
-            } else {
-                res.cookie("id_token", Date.now().toString());
-                console.log(getCookie("id_token", req.headers.cookie))
-                return {userId: Date.now().toString()}
-            }
         },
         subscriptions: {
-            onConnect: (connectionParams, webSocket, context) => {
-                console.log(context)
-                if (getIdTokenFromRawHeaders('id_token', context.request.rawHeaders)) {
-                    const userId = getIdTokenFromRawHeaders("id_token", context.request.rawHeaders);
+            onConnect: (connectionParams: any, webSocket, context) => {
+                console.log(connectionParams?.userId)
+                if (connectionParams?.userId) {
+                    const userId = connectionParams.userId;
                     createUserCart(userId);
                     return {userId};
+                } else{
+                    createUserCart("FuckingKings");
                 }
-                throw new Error(" user without id_token tries to open connection");
+                // throw new Error(" user without userId tries to open connection");
             },
             onDisconnect: (websocket, context) => {
                 context.initPromise?.then(value => {
@@ -66,11 +49,4 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
     apolloServer.installSubscriptionHandlers(httpServer);
     return apolloServer;
 
-}
-
-const getIdTokenFromRawHeaders = (idToken: string, rawHeaders: string[]): any => {
-    let temp;
-    temp = rawHeaders.filter((item) => item.includes(idToken))
-
-    return getCookie(idToken, temp[0]);
 }

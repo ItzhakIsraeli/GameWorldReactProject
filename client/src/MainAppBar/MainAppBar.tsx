@@ -13,6 +13,7 @@ import Search from "../Search/Search";
 
 export default function MainAppBar() {
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
+
     const [isOpen, setIsOpen] = React.useState(false);
 
     const getTotalItems = () => {

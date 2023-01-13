@@ -12,5 +12,5 @@ export interface StoreState {
 
 export const itemsMiniStore = (state: StoreState) => state.items;
 export const filterOptionsMiniStore = (state: StoreState) => state.filterOptions;
-export const useDataMiniStore = (state: StoreState) => state.userData;
+export const userDataMiniStore = (state: StoreState) => state.userData;
 export const appSettingsMiniStore = (state: StoreState) => state.appSettings;

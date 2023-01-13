@@ -12,10 +12,11 @@ import React from "react";
 import {ItemType} from "../Item/Item";
 import {useDispatch, useSelector} from "react-redux";
 import {removeItem, updateAmount} from "../redux/itemsList/itemsListActions";
-import {itemsMiniStore, StoreState} from "../redux/miniStore";
+import {itemsMiniStore, StoreState, userDataMiniStore} from "../redux/miniStore";
 import {useMutation} from "@apollo/client";
 import {UPDATE_CART} from "../GraphQl/Schema";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import {UserDataTypes} from "../redux/userData/userDataTypes";
 
 interface CartItemProps {
     item: CartItemType
@@ -41,13 +42,11 @@ const MenuProps = {
         },
     },
 };
-
 export const CartItem = ({item}: CartItemProps) => {
-    const [updateCart, {data}] = useMutation(UPDATE_CART, {
-        variables: {
-            productId: '638e2818ce5ee77b9a86b117', amount: 7
-        }
-    });
+
+    const [updateCart, {data}] = useMutation(UPDATE_CART);
+    const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
+
 
     const [limit, setLimit] = React.useState(item.amount);
     const [limitArr, setLimitArr] = React.useState<number[]>();
@@ -67,7 +66,14 @@ export const CartItem = ({item}: CartItemProps) => {
     }, [limit])
 
     const handleChange = (e: SelectChangeEvent<number | undefined>) => {
-        updateCart();
+        console.log(item.amount);
+        updateCart({
+            variables: {
+                userId: user.userId,
+                productId: item.product.id,
+                amount: Number(e.target.value)
+            }
+        }).then(() => console.log('yse'));
         setLimit(Number(e.target.value))
         dispatch(updateAmount(item.product, Number(e.target.value)))
     }
@@ -75,7 +81,7 @@ export const CartItem = ({item}: CartItemProps) => {
     return (
         <ListItem>
             <Grid container justifyContent={'center'} alignItems={'center'} gap={1}>
-                <IconButton title="Remove Item" onClick={()=>dispatch(removeItem(item.product))}>
+                <IconButton title="Remove Item" onClick={() => dispatch(removeItem(item.product))}>
                     <DeleteOutlineIcon fontSize={'medium'} color={'error'}/>
                 </IconButton>
                 <ListItemAvatar>

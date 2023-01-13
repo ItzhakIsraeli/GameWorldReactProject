@@ -29,7 +29,7 @@ export const typeDefs = gql`
         cartProducts: [CartProduct]!
     }
     type Query {
-        getProducts(userId: String!): [Product]
+        getProducts(userId: String): [Product]
         getProduct(id: ID): Product
     }
     input AddProductInput {
