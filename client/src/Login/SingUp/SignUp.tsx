@@ -12,6 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {Copyright} from "../SignIn/SignIn";
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {auth} from "../../Firebase/firebase";
+import {useMutation} from "@apollo/client";
+import {ADD_USER, UPDATE_CART} from "../../GraphQl/Schema";
+import {useDispatch, useSelector} from "react-redux";
+import {StoreState, userDataMiniStore} from "../../redux/miniStore";
+import {addUserData} from "../../redux/userData/userDataActions";
 
 const theme = createTheme();
 
@@ -21,13 +28,47 @@ interface SignUpProps {
 }
 
 export default function SignUp({handleClose, openSignIn}: SignUpProps) {
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [phone, setPhone] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [age, setAge] = React.useState('');
+    const [address, setAddress] = React.useState('');
+    const [state, setState] = React.useState('');
+    const [isError, setIsError] = React.useState(false);
+    const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
+    const [addUser, {data}] = useMutation(ADD_USER);
+
+    const dispatch = useDispatch();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        // eslint-disable-next-line no-console
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+
+        createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
+            console.log(userCredentials);
+            setIsError(false);
+            dispatch(addUserData({
+                fireBaseId: userCredentials.user.uid, email
+            }));
+            addUser({
+                variables: {
+                    body: {
+                        userId: user.userId,
+                        firstName,
+                        lastName,
+                        phone,
+                        age,
+                        state,
+                        address,
+                        email
+                    }
+                }
+            }).then(() => console.log('add User in SignUp')).catch((e) => console.log('error in mutation', e));
+            handleClose();
+        }).catch((error) => {
+            console.log(error);
+            setIsError(true);
         });
     };
 
@@ -47,89 +88,97 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        הרשמה
+                        Sing Up
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    onChange={(event) => setFirstName(event.target.value)}
                                     autoComplete="given-name"
                                     name="firstName"
                                     required
                                     fullWidth
                                     id="firstName"
-                                    label="שם פרטי"
+                                    label="First Name"
                                     autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    onChange={(event) => setLastName(event.target.value)}
                                     required
                                     fullWidth
                                     id="lastName"
-                                    label="שם משפחה"
+                                    label="Last Name"
                                     name="lastName"
                                     autoComplete="family-name"
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    required
-                                    fullWidth
-                                    id="id"
-                                    label="תעודת זהות"
-                                    name="id"
-                                    autoComplete="id"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    autoComplete="phone-number"
+                                    onChange={(event) => setPhone(event.target.value)}
+                                    autoComplete="tel"
                                     name="phone number"
                                     required
                                     fullWidth
                                     id="phone number"
-                                    label="מספר טלפון"
+                                    label="Phone Number"
                                     autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    onChange={(event) => setAge(event.target.value)}
                                     required
                                     fullWidth
                                     id="age"
-                                    label="גיל"
+                                    label="Age"
                                     name="age"
                                     autoComplete="age"
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    onChange={(event) => setState(event.target.value)}
+                                    required
+                                    fullWidth
+                                    id="state"
+                                    label="State"
+                                    name="state"
+                                    autoComplete="country"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    onChange={(event) => setAddress(event.target.value)}
                                     autoComplete="address"
                                     name="address"
                                     required
                                     fullWidth
                                     id="address"
-                                    label="כתובת"
+                                    label="Adress"
                                     autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    onChange={(event) => setEmail(event.target.value)}
                                     required
                                     fullWidth
                                     id="email"
-                                    label="כתובת מייל"
+                                    label="Email"
                                     name="email"
                                     autoComplete="email"
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    onChange={(event) => setPassword(event.target.value)}
                                     required
                                     fullWidth
                                     name="password"
-                                    label="סיסמה"
+                                    label="Password"
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
@@ -137,27 +186,32 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container>
-                                    <Grid item xs={8}>
+                                    <Grid item>
                                         <FormControlLabel
                                             control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                                            label="קבלת מידע ופרסומים במייל"
+                                            label="Keep me up to date on news and exclusive offers"
                                         />
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
+                        {isError &&
+                            <Typography color={'error'}>
+                                The Email already exist in the system.
+                                Try to Log In or Sing Up with different Email.
+                            </Typography>}
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            הירשם
+                            Sing Up
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Button onClick={openSignIn}>
-                                    קיים לך כבר חשבון? התחבר עכשיו
+                                    Do you have account already ? sign in now !
                                 </Button>
                             </Grid>
                         </Grid>

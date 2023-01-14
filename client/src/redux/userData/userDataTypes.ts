@@ -1,0 +1,5 @@
+export enum UserDataTypes {
+    ADD_USER_DATA = 'ADD_USER_DATA',
+    ADD_USER_ID = 'ADD_USER_ID',
+    UPDATE_USER_FIRSTNAME = 'UPDATE_USER_FIRSTNAME'
+}

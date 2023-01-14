@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {useDispatch} from "react-redux";
+import {auth} from "../../Firebase/firebase";
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 export const Copyright = () => {
     return (
@@ -32,16 +34,20 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
     const [error, setError] = React.useState(false);
     const [password, setPassword] = React.useState('');
     const dispatch = useDispatch();
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // usersList.forEach(user => {
-        //     if ((user.mail === email) && user.password === password) {
-        //         dispatch(setCurrentUser(user));
-        //         handleClose();
-        //     }
-        // })
+        signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
+            console.log(userCredentials)
 
-        setError(true);
+            // TODO: add here query from the mongo by email to get all the data from the mongo
+            //       after that => put the userData in the redux !
+
+            handleClose();
+        }).catch((error) => {
+            console.log(error);
+            setError(true);
+        });
     };
 
     return (
@@ -60,7 +66,7 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                         <SportsEsportsIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        התחברות
+                        Sing In
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                         <TextField
@@ -69,7 +75,7 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             required
                             fullWidth
                             id="email"
-                            label="שם משתמש / כתובת מייל"
+                            label="UserName / Email"
                             name="email"
                             autoComplete="email"
                             autoFocus
@@ -80,12 +86,14 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             required
                             fullWidth
                             name="password"
-                            label="סיסמה"
+                            label="Password"
                             type="password"
                             id="password"
                             autoComplete="current-password"
                         />
-                        {error && <Typography color={'red'}>שם משתמש או סיסמה שגויים, נסה שוב </Typography>
+                        {error &&
+                            <Typography color={'red'}>Sorry your Username and/or Password are incorrect. please try
+                                again </Typography>
                         }
                         <Button
                             type="submit"
@@ -93,20 +101,20 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                         >
-                            התחבר
+                            Sing In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
+                            <Grid item>
                                 <Button>
                                     <Typography variant={'caption'}>
-                                        שכחתי סיסמה
+                                        Forgot password ?
                                     </Typography>
                                 </Button>
                             </Grid>
                             <Grid item>
                                 <Button onClick={openSignUp}>
                                     <Typography variant={'caption'}>
-                                        אין לך חשבון? צור עכשיו
+                                        You haven't account? create now !
                                     </Typography>
                                 </Button>
                             </Grid>
