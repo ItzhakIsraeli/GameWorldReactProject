@@ -141,7 +141,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
                                     <Grid container justifyContent={'center'}>
                                         <Button size={'large'} variant="contained" color={'info'}>
                                             <Typography>
-                                               Filter
+                                                Filter
                                             </Typography>
                                         </Button>
                                     </Grid>

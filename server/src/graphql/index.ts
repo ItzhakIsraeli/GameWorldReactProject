@@ -25,7 +25,7 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
                     createUserCart(userId);
                     return {userId};
                 } else{
-                    createUserCart("FuckingKings");
+                    createUserCart("GraphqlUser");
                 }
                 // throw new Error(" user without userId tries to open connection");
             },

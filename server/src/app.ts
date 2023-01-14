@@ -1,6 +1,4 @@
-// @ts-ignore
-import express, {Request, Response} from 'express';
-import {checkout, getAllProducts} from './db/store.dal';
+import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import {connect} from "./db/db-connection";
@@ -23,23 +21,3 @@ const init = async () => {
 }
 
 init();
-
-
-// const init = async () => {
-//     app.listen(port, () => console.log(`server running in port ${port}`));
-//     await connect();
-// }
-//
-// app.get('/products', async (req: Request, res:Response) => {
-//     res.send(await getAllProducts());
-// });
-//
-// app.post('/checkout', async (req: Request, res:Response) => {
-//     const order = await checkout(req.body);
-//     console.log(req.body)
-//     res.send(order);
-// });
-
-// init();
-
-

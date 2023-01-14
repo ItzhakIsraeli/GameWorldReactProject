@@ -37,7 +37,7 @@ export default function MainAppBar() {
                                     </Badge>
                                 </IconButton>
                             </Grid>
-                            <Grid container justifyContent={'center'} xs >
+                            <Grid container justifyContent={'center'} xs>
                                 <Search/>
                             </Grid>
                             <Grid item xs={2}>

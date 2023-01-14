@@ -1,5 +1,6 @@
 import {
-    Button, Collapse,
+    Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -7,7 +8,6 @@ import {
     DialogTitle,
     Grid,
     List,
-    TextField,
     Typography
 } from "@mui/material";
 import Axios from "axios";
@@ -15,7 +15,6 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {itemsMiniStore, StoreState} from "../redux/miniStore";
 import {ItemType} from "../Item/Item";
-import {removeAllItems} from "../redux/itemsList/itemsListActions";
 import {CartItem, CartItemType} from "./CartItem";
 import {TransitionGroup} from 'react-transition-group';
 

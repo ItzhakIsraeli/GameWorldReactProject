@@ -1,6 +1,8 @@
 import {
-    Avatar, Box,
-    FormControl, Grid, IconButton, InputLabel,
+    Avatar,
+    FormControl,
+    Grid,
+    IconButton,
     ListItem,
     ListItemAvatar,
     ListItemText,
@@ -16,7 +18,6 @@ import {itemsMiniStore, StoreState, userDataMiniStore} from "../redux/miniStore"
 import {useMutation} from "@apollo/client";
 import {UPDATE_CART} from "../GraphQl/Schema";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {UserDataTypes} from "../redux/userData/userDataTypes";
 
 interface CartItemProps {
     item: CartItemType
@@ -73,15 +74,26 @@ export const CartItem = ({item}: CartItemProps) => {
                 productId: item.product.id,
                 amount: Number(e.target.value)
             }
-        }).then(() => console.log('yse'));
+        }).then(() => console.log('update cart in CartItem => Change'));
         setLimit(Number(e.target.value))
         dispatch(updateAmount(item.product, Number(e.target.value)))
+    }
+
+    const handleRemoveItem = () => {
+        updateCart({
+            variables: {
+                userId: user.userId,
+                productId: item.product.id,
+                amount: 0
+            }
+        }).then(() => console.log('update cart in CartItem => Remove'));
+        dispatch(removeItem(item.product));
     }
 
     return (
         <ListItem>
             <Grid container justifyContent={'center'} alignItems={'center'} gap={1}>
-                <IconButton title="Remove Item" onClick={() => dispatch(removeItem(item.product))}>
+                <IconButton title="Remove Item" onClick={handleRemoveItem}>
                     <DeleteOutlineIcon fontSize={'medium'} color={'error'}/>
                 </IconButton>
                 <ListItemAvatar>

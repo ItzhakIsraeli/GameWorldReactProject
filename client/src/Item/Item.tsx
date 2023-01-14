@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Box, Button, Card, CardContent, CardMedia, Grid, IconButton, ListItemButton, Typography} from "@mui/material";
 import {ItemDialog} from "../ItemDialog/ItemDialog";
 import {
@@ -9,8 +9,10 @@ import {
 } from "../redux/itemsList/itemsListActions";
 import {useDispatch, useSelector} from "react-redux";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import {itemsMiniStore, StoreState} from "../redux/miniStore";
+import {itemsMiniStore, StoreState, userDataMiniStore} from "../redux/miniStore";
 import {CartItemType} from "../CartForm/CartItem";
+import {useMutation} from "@apollo/client";
+import {UPDATE_CART} from "../GraphQl/Schema";
 
 export interface ItemType {
     id: string,
@@ -31,6 +33,8 @@ const isInCart = (id: string, items: CartItemType[]) => {
 }
 
 export const Item = (item: ItemType) => {
+    const [updateCart, {data}] = useMutation(UPDATE_CART);
+    const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
     const [isOpen, setIsOpen] = React.useState(false);
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
@@ -40,8 +44,22 @@ export const Item = (item: ItemType) => {
     const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
         if (isInCart(item.id, items)) {
+            updateCart({
+                variables: {
+                    userId: user.userId,
+                    productId: item.id,
+                    amount: 0
+                }
+            }).then(() => console.log('update cart in Item'));
             dispatch(removeItem(item));
         } else {
+            updateCart({
+                variables: {
+                    userId: user.userId,
+                    productId: item.id,
+                    amount: 1
+                }
+            }).then(() => console.log('update cart in Item'));
             dispatch(addItemToCart(item, 1));
         }
         e.stopPropagation();

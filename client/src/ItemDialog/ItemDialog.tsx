@@ -1,12 +1,14 @@
 import React from 'react';
 import {
-    Avatar, Button,
+    Avatar,
+    Button,
     Card,
     CardContent,
     CardHeader,
     CardMedia,
     Dialog,
-    Grid, IconButton,
+    Grid,
+    IconButton,
     Typography
 } from "@mui/material";
 import {ItemType} from "../Item/Item";
@@ -23,7 +25,16 @@ interface ItemDialogProps {
 }
 
 
-export const ItemDialog = ({item, isOpen, inCart, handleClose, handleOnClick, addToFavorite,inFavorites}: ItemDialogProps) => {
+export const ItemDialog = ({
+                               item,
+                               isOpen,
+                               inCart,
+                               handleClose,
+                               handleOnClick,
+                               addToFavorite,
+                               inFavorites
+                           }: ItemDialogProps) => {
+
     return (
         <Dialog
             scroll={'body'}
