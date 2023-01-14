@@ -21,6 +21,7 @@ export const GET_MY_ORDERS = gql`
             date
             userId
             phone
+            totalPrice
             products {
                 id
                 amount
@@ -81,14 +82,16 @@ export const typeDefs = gql`
         lastName: String,
         date: String,
         phone: String,
+        totalPrice: Number,
         products: [CartProduct]
     }
     input OrderInput {
         firstName: String!,
         lastName: String!,
         userId: String!,
-        data: String!
+        date: String!
         phone: String!,
+        totalPrice: Number!
         products: [CartProductInput]!
     }
     type User {
@@ -144,6 +147,7 @@ export const ADD_ORDER = gql`
             date
             userId
             phone
+            totalPrice
             products {
                 id
                 amount

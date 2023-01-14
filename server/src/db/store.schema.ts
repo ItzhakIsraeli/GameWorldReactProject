@@ -32,6 +32,7 @@ export interface Order extends mongoose.Document {
     userId: string,
     date: string,
     phone: string,
+    totalPrice: number,
     products: Array<CartProduct>,
 }
 
@@ -54,6 +55,7 @@ const OrderModelSchema = new Schema<Order>({
     userId: String,
     date: String,
     phone: String,
+    totalPrice: Number,
     products: [CartProductSchema],
 });
 

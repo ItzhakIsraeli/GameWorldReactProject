@@ -16,6 +16,7 @@ export const typeDefs = gql`
         date: String,
         userId: String,
         phone: String,
+        totalPrice: Number,
         products: [CartProduct]
     }
     type User {
@@ -65,11 +66,12 @@ export const typeDefs = gql`
         limit: Int    
     }
     input OrderInput {
-        firstName: String!,
-        lastName: String!,
-        userId: String!,
-        data: String!
-        phone: String!,
+        firstName: String!
+        lastName: String!
+        userId: String!
+        date: String!
+        phone: String!
+        totalPrice: Number!
         products: [CartProductInput]!
     }
     input AddUserInput {
