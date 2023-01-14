@@ -14,6 +14,11 @@ import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {Copyright} from "../SignIn/SignIn";
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth} from "../../Firebase/firebase";
+import {useMutation} from "@apollo/client";
+import {ADD_USER, UPDATE_CART} from "../../GraphQl/Schema";
+import {useDispatch, useSelector} from "react-redux";
+import {StoreState, userDataMiniStore} from "../../redux/miniStore";
+import {addUserData} from "../../redux/userData/userDataActions";
 
 const theme = createTheme();
 
@@ -32,6 +37,10 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
     const [address, setAddress] = React.useState('');
     const [state, setState] = React.useState('');
     const [isError, setIsError] = React.useState(false);
+    const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
+    const [addUser, {data}] = useMutation(ADD_USER);
+
+    const dispatch = useDispatch();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -39,9 +48,24 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
         createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
             console.log(userCredentials);
             setIsError(false);
+            dispatch(addUserData({
+                fireBaseId: userCredentials.user.uid, email
+            }));
+            addUser({
+                variables: {
+                    body: {
+                        userId: user.userId,
+                        firstName,
+                        lastName,
+                        phone,
+                        age,
+                        state,
+                        address,
+                        email
+                    }
+                }
+            }).then(() => console.log('add User in SignUp')).catch((e) => console.log('error in mutation', e));
             handleClose();
-            // TODO: add here mutation and add the extra data on the user to the DB
-
         }).catch((error) => {
             console.log(error);
             setIsError(true);

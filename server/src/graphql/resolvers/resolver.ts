@@ -1,11 +1,11 @@
 import * as DAL from "../../db/store.dal";
 import * as Cart from "../cart";
 import {ObjectId} from "mongoose";
-import {Order, Product} from "../../db/store.schema";
+import {Order, Product, User} from "../../db/store.schema";
 import {pubsub} from "../index";
 import {withFilter} from "graphql-subscriptions";
 
-const getProducts = async (parent: any, args: {userId: string}, req: any) => {
+const getProducts = async (parent: any, args: { userId: string }, req: any) => {
     const products = await DAL.getAllProducts();
     return Cart.reduceProductsLimitByCart(args.userId, products);
 };
@@ -36,7 +36,7 @@ const updateProduct = async (parent: any, args: { id: ObjectId, body: Partial<Pr
     return result;
 };
 
-const updateCart = async (parent: any, args: {userId: string, productId: string, amount: number }, req: any) => {
+const updateCart = async (parent: any, args: { userId: string, productId: string, amount: number }, req: any) => {
     const userId = args.userId;
     const delta = await Cart.updateCart(userId, args.productId, args.amount);
     await pubsub.publish("CART_UPDATE", {cartUpdate: {user: userId, cartProducts: [delta]}});
@@ -50,6 +50,42 @@ const checkout = async (parent: any, args: { userId: string, order: Order }, req
     const cartAfterUpdate = Cart.reduceProductsLimitByCart(userId, userCart);
     Cart.clearCart(userId);
     return cartAfterUpdate;
+};
+
+const getMyOrders = async (parent: any, args: { userId: string }) => {
+    const result = await DAL.getMyOrders(args.userId);
+    if (!result) {
+        throw new Error(`Orders not Found BY User: ${args.userId}`)
+    }
+    return result;
+};
+
+const addOrder = (paren: any, args: { body: Order }) => DAL.addOrder(args.body);
+
+const addUser = (paren: any, args: { body: User }) => DAL.addUser(args.body);
+
+const updateUser = async (parent: any, args: { userId: string, body: Partial<User> }) => {
+    const result = await DAL.updateUser(args.userId, args.body);
+    if (!result) {
+        throw new Error(`User not Found : ${args.userId}`)
+    }
+    return result;
+}
+
+const removeUser = async (parent: any, args: { userId: string }) => {
+    const result = await DAL.removeUser(args.userId);
+    if (!result) {
+        throw new Error(`User not Found : ${args.userId}`)
+    }
+    return result;
+}
+
+const getUser = async (parent: any, args: { userId: string }) => {
+    const result = await DAL.getUser(args.userId);
+    if (!result) {
+        throw new Error(`User ${args.userId} not Found !`)
+    }
+    return result;
 };
 
 const cartUpdate = {
@@ -66,14 +102,20 @@ export const resolvers = {
     },
     Query: {
         getProducts,
-        getProduct
+        getProduct,
+        getMyOrders,
+        getUser
     },
     Mutation: {
         addProduct,
         removeProduct,
         updateProduct,
         updateCart,
-        checkout
+        checkout,
+        addOrder,
+        addUser,
+        removeUser,
+        updateUser
     },
     Subscription: {
         cartUpdate

@@ -1,4 +1,4 @@
-import {CartProduct, Order, OrderModel, Product, ProductModel} from "./store.schema";
+import {CartProduct, Order, OrderModel, Product, ProductModel, User, UserModel} from "./store.schema";
 import mongoose, {ObjectId} from "mongoose";
 
 export const getAllProducts = async (): Promise<Product[]> => ProductModel.find();
@@ -15,6 +15,8 @@ export const updateProduct = async (_id: ObjectId, field: Partial<Product>, sess
     ProductModel.findOneAndUpdate({_id}, field, {new: true, session});
 
 export const addOrder = async (order: Order): Promise<Order> => OrderModel.create(order);
+
+export const getMyOrders = async (userId: string): Promise<Order[]> => OrderModel.find({userId});
 
 export const checkout = async (checkoutProducts: CartProduct[]): Promise<Product[]> => {
     const session = await mongoose.startSession();
@@ -52,3 +54,13 @@ export const checkout = async (checkoutProducts: CartProduct[]): Promise<Product
     }
     return products;
 };
+
+export const addUser = async (user: User): Promise<User> => UserModel.create(user);
+
+export const removeUser = async (userId: string): Promise<User | null> =>
+    UserModel.findOneAndRemove({userId}, {new: true});
+
+export const updateUser = async (userId: string, field: Partial<User>): Promise<User | null> =>
+    UserModel.findOneAndUpdate({userId}, field, {new: true});
+
+export const getUser = async (userId: string): Promise<User | null> => UserModel.findOne({userId});
