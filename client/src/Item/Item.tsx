@@ -66,6 +66,7 @@ export const Item = (item: ItemType) => {
     }
 
     const addToFavorites = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        console.log('inItem add to favorites')
         if (favorites.includes(item.id)) {
             dispatch(removeItemFromFavorites(item.id));
         } else {

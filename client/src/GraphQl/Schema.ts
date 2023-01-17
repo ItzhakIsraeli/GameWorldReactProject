@@ -82,7 +82,7 @@ export const typeDefs = gql`
         lastName: String,
         date: String,
         phone: String,
-        totalPrice: Number,
+        totalPrice: Int,
         products: [CartProduct]
     }
     input OrderInput {
@@ -91,7 +91,7 @@ export const typeDefs = gql`
         userId: String!,
         date: String!
         phone: String!,
-        totalPrice: Number!
+        totalPrice: Int!
         products: [CartProductInput]!
     }
     type User {

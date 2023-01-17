@@ -15,6 +15,9 @@ import {loadProducts, updateProductLimit} from "../redux/itemsList/itemsListActi
 import {CURRENT_PAGE} from "../redux/appSettings/appSettingsReducers";
 import {useSubscription} from "@apollo/client";
 import {client} from "../App";
+import Empty from "../assets/Empty.png";
+import {Grid} from "@mui/material";
+import {UserStatistics} from "../UserStatistics/UserStatistics";
 
 export default function Main() {
     const [final, setFinal] = React.useState([]);
@@ -41,6 +44,8 @@ export default function Main() {
 
 
     React.useEffect(() => {
+        console.log('InMain getAllProducts effect')
+
         client
             .query({
                 query: GET_ALL_PRODUCTS,
@@ -58,20 +63,20 @@ export default function Main() {
 
 
     React.useEffect(() => {
+        console.log('InMain item effect')
         if (items.length > 0) {
             const newList = items.filter((item: ItemType) => item.name.toLowerCase().includes(searchText.toLowerCase()));
             setFinal(newList);
             // setFavoritesList(newList.filter((item: ItemType) => favorites?.includes(item.id)));
         }
     }, [searchText]);
-    //
-    // React.useEffect(() => {
-    //     console.log('ImMain item effect')
-    //     if (items.length > 0) {
-    //         setFavoritesList(items.filter((item: ItemType) => favorites?.includes(item.id)))
-    //         setFinal(items)
-    //     }
-    // }, [items])
+
+    React.useEffect(() => {
+        console.log('InMain favorites effect')
+        if (items.length > 0) {
+            setFavoritesList(items.filter((item: ItemType) => favorites?.includes(item.id)))
+        }
+    }, [favorites])
 
     return (
         <>
@@ -80,13 +85,20 @@ export default function Main() {
                 currentPage === CURRENT_PAGE.HOME_PAGE && <ItemList data={final}/>
             }
             {
-                currentPage === CURRENT_PAGE.PROFILE_PAGE && <div> Profile </div>
+                currentPage === CURRENT_PAGE.PROFILE_PAGE && <UserStatistics/>
             }
             {
                 currentPage === CURRENT_PAGE.MY_ORDERS_PAGE && <div> My Orders </div>
             }
             {
-                currentPage === CURRENT_PAGE.FAVORITES_PAGE && <ItemList data={favoritesList}/>
+                currentPage === CURRENT_PAGE.FAVORITES_PAGE && favoritesList.length > 0 &&
+                <ItemList data={favoritesList}/>
+            }
+            {
+                currentPage === CURRENT_PAGE.FAVORITES_PAGE && favoritesList.length === 0 &&
+                <Grid container justifyContent={'center'} alignItems={'center'}>
+                    <img src={Empty} className={"App-logo"} alt={"logo"} width={"65%"}/>
+                </Grid>
             }
         </>
     )
