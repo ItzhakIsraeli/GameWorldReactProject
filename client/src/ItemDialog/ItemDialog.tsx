@@ -45,7 +45,7 @@ export const ItemDialog = ({
             <Card sx={{width: 500}}>
                 <CardHeader
                     avatar={
-                        <Avatar src={require(`../assets/${item.image}`)}/>
+                        <Avatar src={item.image}/>
                     }
                     title={<Typography variant={'h3'}
                                        fontWeight={'bold'}>{`${item.name}`}</Typography>}
@@ -53,12 +53,12 @@ export const ItemDialog = ({
                 <CardMedia
                     component="img"
                     sx={{maxHeight: 400}}
-                    image={require(`../assets/${item.image}`)}
+                    src={item.image}
                     alt={item.name}
                 />
                 <CardContent>
                     <Grid container justifyContent={'center'}>
-                        <Typography variant={'h5'}> Description: {item.description}</Typography>
+                        <Typography variant={'body1'} fontWeight={'bold'}> Description: {item.description}</Typography>
                     </Grid>
                 </CardContent>
                 <Grid container gap={3} alignItems={'center'} justifyContent={'center'}>

@@ -17,11 +17,14 @@ import {UPDATE_CART} from "../GraphQl/Schema";
 export interface ItemType {
     id: string,
     name: string,
+    rate: number,
+    userRate: string,
+    platform: string,
+    releaseDate: string,
     description: string,
     price: number,
     image: string,
-    limit: number,
-    market: string
+    limit: number
 }
 
 const isInCart = (id: string, items: CartItemType[]) => {
@@ -80,16 +83,22 @@ export const Item = (item: ItemType) => {
                         handleOnClick={handleOnClick} addToFavorite={addToFavorites}
                         inFavorites={favorites.includes(item.id)}/>
             <ListItemButton onClick={() => setIsOpen(true)}>
-                <Card sx={{display: 'flex', width: 500, height: 200}}>
-                    <Grid container justifyContent={'center'} gap={12}>
-                        <Grid item xs>.
+                <Card sx={{display: 'flex', width: 500, height: 250}}>
+                    <Grid container justifyContent={'center'} alignItems={"flex-up"} gap={8}>
+                        <Grid item xs={6}>.
                             <Box sx={{display: 'flex', flexDirection: 'column'}}>
                                 <CardContent>
-                                    <Typography component="div" variant="h5">
+                                    <Typography component="div" variant="body1" fontWeight={'bold'}>
                                         {item.name}
                                     </Typography>
                                     <Typography variant="subtitle1" color="text.secondary" component="div">
                                         Price: {item.price} ₪
+                                    </Typography>
+                                    <Typography variant="subtitle1" color="text.secondary" component="div">
+                                        Platform: {item.platform} 🎮
+                                    </Typography>
+                                    <Typography variant="subtitle1" color="green" component="div">
+                                        User Score: {item.userRate} 🏆
                                     </Typography>
                                 </CardContent>
                                 <Grid container gap={1} alignItems={'end'}>
@@ -111,9 +120,9 @@ export const Item = (item: ItemType) => {
                         </Grid>
                         <Grid item xs>
                             <CardMedia
-                                sx={{display: 'flex', width: 190, height: 180}}
+                                sx={{display: 'flex', width: 180, height: 180, paddingTop:5}}
                                 component="img"
-                                image={require(`../assets/${item.image}`)}
+                                src={item.image}
                             />
                         </Grid>
                     </Grid>

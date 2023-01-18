@@ -9,9 +9,16 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {auth} from "../../Firebase/firebase";
 import {signInWithEmailAndPassword} from 'firebase/auth';
+import {useQuery} from "@apollo/client";
+import {GET_ALL_PRODUCTS, GET_USER} from "../../GraphQl/Schema";
+import {client} from "../../App";
+import {loadProducts} from "../../redux/itemsList/itemsListActions";
+import {UserDataType} from "../../redux/userData/userDataReducers";
+import {StoreState, userDataMiniStore} from "../../redux/miniStore";
+import {addUserDetails} from "../../redux/userData/userDataActions";
 
 export const Copyright = () => {
     return (
@@ -29,7 +36,6 @@ interface SignInProps {
 }
 
 export default function SignIn({handleClose, openSignUp}: SignInProps) {
-    // const usersList = useSelector((state: UsersState) => usersMiniStore(state).UserList)
     const [email, setEmail] = React.useState('');
     const [error, setError] = React.useState(false);
     const [password, setPassword] = React.useState('');
@@ -38,10 +44,20 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-            console.log(userCredentials)
-
-            // TODO: add here query from the mongo by email to get all the data from the mongo
-            //       after that => put the userData in the redux !
+            console.log(userCredentials);
+            client
+                .query({
+                    query: GET_USER,
+                    variables: {
+                        userId: email
+                    }
+                })
+                .then((result: any) => {
+                        dispatch(addUserDetails(result.data.getUser));
+                    }
+                ).catch((error) => {
+                console.log(error);
+            })
 
             handleClose();
         }).catch((error) => {

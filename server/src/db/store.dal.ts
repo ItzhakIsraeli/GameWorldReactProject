@@ -26,18 +26,18 @@ export const checkout = async (checkoutProducts: CartProduct[]): Promise<Product
             products = await Promise.all(
                 checkoutProducts.map(async (cartProduct) => {
                     let product: Product = await ProductModel.findOne({
-                        _id: cartProduct._id
+                        _id: cartProduct.id
                     }).session(session) as Product;
                     if (!product) {
                         throw new Error('Product Not Found');
                     }
                     if (product.limit) {
                         if (product.limit < cartProduct.amount) {
-                            throw new Error(`Product ${cartProduct._id} out of stock! missing ${cartProduct.amount - product.limit}`);
+                            throw new Error(`Product ${cartProduct.id} out of stock! missing ${cartProduct.amount - product.limit}`);
                         }
                     }
                     const newProduct = await updateProduct(
-                        cartProduct._id,
+                        cartProduct.id,
                         {limit: product.limit - cartProduct.amount},
                         session
                     );
@@ -63,4 +63,4 @@ export const removeUser = async (userId: string): Promise<User | null> =>
 export const updateUser = async (userId: string, field: Partial<User>): Promise<User | null> =>
     UserModel.findOneAndUpdate({userId}, field, {new: true});
 
-export const getUser = async (userId: string): Promise<User | null> => UserModel.findOne({userId});
+export const getUser = async (email: string): Promise<User | null> => UserModel.findOne({email});

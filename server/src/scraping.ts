@@ -1,29 +1,10 @@
 import * as cheerio from 'cheerio';
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import * as http from "http";
 import axios from "axios";
-
-// export const app = express();
-// app.use(cors());
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: false}));
-//
-// const port = 4000;
-//
-// const init = async () => {
-//     const httpServer = http.createServer();
-//     httpServer.on('request', app);
-//     await httpServer.listen(port, () => console.log(`server running in port ${port}`));
-// }
-//
-// init();
 
 // URL of the page we want to scrape
 const url = "https://www.metacritic.com/browse/games/score/metascore/all/all/filtered";
 
-async function scrapeData() {
+export async function scrapeData() {
     try {
         const {data} = await axios.get(url);
         const $ = cheerio.load(data);
@@ -35,10 +16,12 @@ async function scrapeData() {
             const game: any = {};
             game.name = $(el).children("a").children("h3").text().trim();
             game.rate = $(el).children(".clamp-score-wrap").text().trim()
-            game.usersRate = $(el).children(".browse-score-clamp").children(".clamp-userscore").children("a").text().trim();
+            game.userRate = $(el).children(".browse-score-clamp").children(".clamp-userscore").children("a").text().trim();
             game.platform = $(el).children(".clamp-details").children(".platform").children(".data").text().trim();
             game.releaseDate = $(el).children(".clamp-details").text().trim().split("\n")[7].trim();
-            game.summery = $(el).children(".summary").text().trim();
+            game.description = $(el).children(".summary").text().trim();
+            game.price = Math.floor(game.rate * game.userRate * 0.25);
+            game.limit = 40;
 
             games.push(game);
         });
@@ -47,10 +30,9 @@ async function scrapeData() {
             games[idx].image = $(el)?.children("a")?.children("img")?.attr()?.src;
         })
 
-        console.log(games);
+        // console.log(games);
+        return games;
     } catch (err) {
         console.error(err);
     }
 }
-
-scrapeData();

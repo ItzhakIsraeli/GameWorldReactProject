@@ -3,7 +3,15 @@ import {UserDataTypes} from "./userDataTypes";
 export interface UserDataType {
     userId: string,
     fireBaseId: string,
-    email: string | null
+    email: string | null,
+    userDetails: {
+        firstName: string,
+        lastName: string,
+        phone: string,
+        age: string,
+        state: string,
+        address: string
+    }
 }
 
 export interface UserDataState {
@@ -16,6 +24,14 @@ interface actionI {
         fireBaseId: string,
         email: string | null,
         userId: string
+        userDetails: {
+            firstName: string,
+            lastName: string,
+            phone: string,
+            age: string,
+            state: string,
+            address: string
+        }
     }
 }
 
@@ -24,7 +40,15 @@ const initialState: UserDataState = {
         {
             userId: '',
             fireBaseId: '',
-            email: ''
+            email: '',
+            userDetails: {
+                firstName: '',
+                lastName: '',
+                phone: '',
+                age: '',
+                state: '',
+                address: ''
+            }
         }
 };
 
@@ -34,6 +58,7 @@ const userDataReducers = (state: UserDataState = initialState, action: actionI) 
             return {
                 ...state,
                 userData: {
+                    ...state.userData,
                     fireBaseId: action.payload.fireBaseId,
                     email: action.payload.email,
                     userId: state.userData.userId
@@ -43,7 +68,16 @@ const userDataReducers = (state: UserDataState = initialState, action: actionI) 
             return {
                 ...state,
                 userData: {
+                    ...state.userData,
                     userId: action.payload
+                }
+            }
+        case UserDataTypes.ADD_USER_DETAILS:
+            return {
+                ...state,
+                userData: {
+                    ...state.userData,
+                    userDetails: action.payload
                 }
             }
         default:

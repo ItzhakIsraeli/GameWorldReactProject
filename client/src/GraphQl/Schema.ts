@@ -5,6 +5,10 @@ export const GET_ALL_PRODUCTS = gql`
         getProducts(userId: $userId){
             id
             name
+            rate
+            userRate
+            platform
+            releaseDate
             description
             price
             image
@@ -35,6 +39,10 @@ export const GET_PRODUCT = gql`
         getProduct(id: $id){
             id
             name
+            rate
+            userRate
+            platform
+            releaseDate
             description
             price
             image
@@ -49,6 +57,7 @@ export const GET_USER = gql`
             firstName
             lastName
             userId
+            phone
             phone
             age
             state
@@ -71,11 +80,14 @@ export const typeDefs = gql`
     type Product {
         id: ID!
         name: String!
+        rate: Int!
+        userRate: String!
+        platform: String!
+        releaseDate: String!
         description: String!
         price: Int!
         image: String!
-        market: String!
-        limit: Int
+        limit: Int!
     }
     type Order {
         firstName: String,
@@ -93,6 +105,14 @@ export const typeDefs = gql`
         phone: String!,
         totalPrice: Int!
         products: [CartProductInput]!
+    }
+    type CartProduct {
+        id: ID!
+        amount: Int!
+    }
+    input CartProductInput {
+        id: ID!
+        amount: Int!
     }
     type User {
         firstName: String,
@@ -127,10 +147,14 @@ export const typeDefs = gql`
 `;
 
 export const CHECKOUT = gql`
-    mutation checkout($userId: String!, $order: Order!){
+    mutation checkout($userId: String!, $order: OrderInput!){
         checkout(userId: $userId, order: $order){
             id
             name
+            rate
+            userRate
+            platform
+            releaseDate
             description
             price
             image

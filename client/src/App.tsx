@@ -10,7 +10,6 @@ import {useDispatch} from "react-redux";
 import {addUserData, addUserId} from "./redux/userData/userDataActions";
 
 const userId = Date.now().toString();
-console.log('Tikuf', userId);
 
 const httpLink = new HttpLink({
     uri: 'http://localhost:3001/graphql',

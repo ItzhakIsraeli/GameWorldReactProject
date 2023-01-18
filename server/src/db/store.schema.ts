@@ -8,10 +8,13 @@ export interface CartProduct extends mongoose.Document {
 
 export interface Product extends mongoose.Document {
     name: string,
+    rate: number,
+    userRate: string,
+    platform: string,
+    releaseDate: string,
     description: string,
     price: number,
     image: string,
-    market: string,
     limit: number
 }
 
@@ -42,10 +45,13 @@ const CartProductSchema = new Schema<CartProduct>({
 
 const ProductModelSchema = new Schema<Product>({
     name: String,
+    rate: Number,
+    userRate: String,
+    platform: String,
+    releaseDate: String,
     description: String,
     price: Number,
     image: String,
-    market: String,
     limit: Number
 });
 
