@@ -97,7 +97,7 @@ export const CartItem = ({item}: CartItemProps) => {
                     <DeleteOutlineIcon fontSize={'medium'} color={'error'}/>
                 </IconButton>
                 <ListItemAvatar>
-                    <Avatar src={require(`../assets/${item.product.image}`)}/>
+                    <Avatar src={item.product.image}/>
                 </ListItemAvatar>
                 <ListItemText primary={item.product.name} secondary={`${item.product.price} ₪`}/>
                 <FormControl sx={{m: 1, minWidth: 100, justifyContent: 'center'}} size="small">

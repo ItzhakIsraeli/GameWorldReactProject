@@ -4,11 +4,14 @@ export const typeDefs = gql`
     type Product {
         id: ID!
         name: String!
+        rate: Int!
+        userRate: String!
+        platform: String!
+        releaseDate: String!
         description: String!
         price: Int!
         image: String!
-        market: String!
-        limit: Int
+        limit: Int!
     }
     type Order {
         firstName: String,
@@ -16,6 +19,7 @@ export const typeDefs = gql`
         date: String,
         userId: String,
         phone: String,
+        totalPrice: Int,
         products: [CartProduct]
     }
     type User {
@@ -48,28 +52,33 @@ export const typeDefs = gql`
     }
     input AddProductInput {
         name: String!
+        rate: Int!
+        userRate: String!
+        platform: String!
+        releaseDate: String!
         description: String!
         price: Int!
         image: String!
-        image2: String!
-        market: String!
-        limit: Int    
+        limit: Int!
     }
     input UpdateProductInput {
         name: String
+        rate: Int
+        userRate: String
+        platform: String
+        releaseDate: String
         description: String
         price: Int
         image: String
-        image2: String
-        market: String
-        limit: Int    
+        limit: Int  
     }
     input OrderInput {
-        firstName: String!,
-        lastName: String!,
-        userId: String!,
-        data: String!
-        phone: String!,
+        firstName: String!
+        lastName: String!
+        userId: String!
+        date: String!
+        phone: String!
+        totalPrice: Int!
         products: [CartProductInput]!
     }
     input AddUserInput {

@@ -5,10 +5,13 @@ import {CartItemType, CartProduct} from "../../CartForm/CartItem";
 export interface Product {
     id: string,
     name: string,
+    rate: number,
+    userRate: string,
+    platform: string,
+    releaseDate: string,
     description: string,
     price: number,
     image: string,
-    market: string,
     limit: number
 }
 

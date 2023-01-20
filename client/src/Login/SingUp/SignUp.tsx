@@ -18,7 +18,7 @@ import {useMutation} from "@apollo/client";
 import {ADD_USER, UPDATE_CART} from "../../GraphQl/Schema";
 import {useDispatch, useSelector} from "react-redux";
 import {StoreState, userDataMiniStore} from "../../redux/miniStore";
-import {addUserData} from "../../redux/userData/userDataActions";
+import {addUserData, addUserDetails} from "../../redux/userData/userDataActions";
 
 const theme = createTheme();
 
@@ -64,7 +64,14 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
                         email
                     }
                 }
-            }).then(() => console.log('add User in SignUp')).catch((e) => console.log('error in mutation', e));
+            }).then(() => dispatch(addUserDetails({
+                firstName,
+                lastName,
+                address,
+                age,
+                state,
+                phone
+            }))).catch((e) => console.log('error in mutation', e));
             handleClose();
         }).catch((error) => {
             console.log(error);
