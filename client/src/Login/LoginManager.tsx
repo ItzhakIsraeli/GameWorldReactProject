@@ -8,17 +8,32 @@ import {auth} from "../Firebase/firebase";
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {SideBarList} from "../SideBar/SideBar";
 import {useDispatch} from "react-redux";
-import {addUserData} from "../redux/userData/userDataActions";
+import {addUserData, addUserDetails} from "../redux/userData/userDataActions";
+import {client} from "../App";
+import {GET_USER} from "../GraphQl/Schema";
 
 export default function LoginManager() {
     const [isOpenSignIn, setIsOpenSignIn] = React.useState<boolean>(false);
     const [isOpenSignUp, setIsOpenSignUp] = React.useState<boolean>(false);
     const [authUser, setAuthUser] = React.useState<any>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<any>(null);
+
     const dispatch = useDispatch();
     React.useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {
+                client
+                    .query({
+                        query: GET_USER,
+                        variables: {
+                            userId: user.email
+                        }
+                    })
+                    .then((result: any) => {
+                            dispatch(addUserDetails(result.data.getUser));
+                        }
+                    ).catch((error) => {
+                    console.log(error);
+                });
                 setAuthUser(user);
                 console.log('user', user, user.email, user.uid)
                 dispatch(addUserData({email: user.email, fireBaseId: user.uid}));
@@ -30,7 +45,7 @@ export default function LoginManager() {
         return () => {
             listen();
         }
-    }, [])
+    }, []);
 
     const userSignOut = () => {
         signOut(auth).then(() => {
@@ -38,7 +53,6 @@ export default function LoginManager() {
         }).catch((error) => {
             console.log(error)
         })
-        handleCloseUserMenu();
     }
 
     const openSignUpForm = () => {
@@ -58,14 +72,6 @@ export default function LoginManager() {
     const handleSignUpClose = () => {
         setIsOpenSignUp(false);
     }
-
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
 
     return (
         <>

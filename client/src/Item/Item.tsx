@@ -13,6 +13,7 @@ import {itemsMiniStore, StoreState, userDataMiniStore} from "../redux/miniStore"
 import {CartItemType} from "../CartForm/CartItem";
 import {useMutation} from "@apollo/client";
 import {UPDATE_CART} from "../GraphQl/Schema";
+import {useCurrencyConverter} from "../Hooks/useCurrencyConverter";
 
 export interface ItemType {
     id: string,
@@ -42,6 +43,7 @@ export const Item = (item: ItemType) => {
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
     const dispatch = useDispatch();
+    const priceUSD = useCurrencyConverter(item.price).toFixed(2);
 
     const handleClose = () => setIsOpen(false)
     const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -92,7 +94,7 @@ export const Item = (item: ItemType) => {
                                         {item.name}
                                     </Typography>
                                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                                        Price: {item.price} ₪
+                                        Price: {item.price} ₪ | {priceUSD} $
                                     </Typography>
                                     <Typography variant="subtitle1" color="text.secondary" component="div">
                                         Platform: {item.platform} 🎮
@@ -120,7 +122,7 @@ export const Item = (item: ItemType) => {
                         </Grid>
                         <Grid item xs>
                             <CardMedia
-                                sx={{display: 'flex', width: 180, height: 180, paddingTop:5}}
+                                sx={{display: 'flex', width: 180, height: 180, paddingTop: 5}}
                                 component="img"
                                 src={item.image}
                             />

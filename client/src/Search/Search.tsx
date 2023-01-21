@@ -2,15 +2,27 @@ import {IconButton, InputBase, Paper} from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from '@mui/icons-material/Clear';
-import React from "react";
+import React, {useEffect} from "react";
 import Filter from "./Filter";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addSearchText} from "../redux/filterOptions/filterOptionsActions";
+import {filterOptionsMiniStore, StoreState} from "../redux/miniStore";
 
 export default function Search() {
     const dispatch = useDispatch();
-    const [filterIsOpen, setFilterIsOpen] = React.useState(false);
-    const [searchText, setSearchText] = React.useState('');
+    const [filterIsOpen, setFilterIsOpen] = React.useState<boolean>(false);
+    const [searchText, setSearchText] = React.useState<string>('');
+    const [isFilterOn, setIsFilterOn] = React.useState<boolean>(false);
+    const filterOptions = useSelector((state: StoreState) => filterOptionsMiniStore(state).filterOptions);
+
+    useEffect(() => {
+        if (filterOptions.minUserRate !== '' || filterOptions.minMetaScore !== '' ||
+            filterOptions.minPrice !== '' || filterOptions.maxPrice !== '' || filterOptions.platform !== '') {
+            setIsFilterOn(true);
+        } else {
+            setIsFilterOn(false);
+        }
+    }, [filterOptions])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -19,10 +31,6 @@ export default function Search() {
 
     const handleSearch = () => {
         dispatch(addSearchText(searchText));
-    }
-
-    const openFilterDialog = () => {
-        setFilterIsOpen(true);
     }
 
     const closeFilterDialog = () => {
@@ -52,8 +60,9 @@ export default function Search() {
                 <IconButton type="button" sx={{p: '10px'}} aria-label="search" onClick={handleSearch}>
                     <SearchIcon/>
                 </IconButton>
-                <IconButton type="button" sx={{p: '10px'}} aria-label="search" onClick={() => setFilterIsOpen(true)}>
-                    <FilterListIcon/>
+                <IconButton type="button" sx={{p: '10px'}}
+                            aria-label="search" onClick={() => setFilterIsOpen(true)}>
+                    <FilterListIcon color={isFilterOn ? "primary" : 'disabled'}/>
                 </IconButton>
             </Paper>
             <Filter isFilterOpen={filterIsOpen} handleCloseFilterForm={closeFilterDialog}/>

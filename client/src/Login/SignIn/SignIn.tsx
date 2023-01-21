@@ -9,15 +9,11 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {auth} from "../../Firebase/firebase";
 import {signInWithEmailAndPassword} from 'firebase/auth';
-import {useQuery} from "@apollo/client";
-import {GET_ALL_PRODUCTS, GET_USER} from "../../GraphQl/Schema";
+import {GET_USER} from "../../GraphQl/Schema";
 import {client} from "../../App";
-import {loadProducts} from "../../redux/itemsList/itemsListActions";
-import {UserDataType} from "../../redux/userData/userDataReducers";
-import {StoreState, userDataMiniStore} from "../../redux/miniStore";
 import {addUserDetails} from "../../redux/userData/userDataActions";
 
 export const Copyright = () => {

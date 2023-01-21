@@ -96,6 +96,12 @@ const cartUpdate = {
 
 const id = ({_id}: { _id: string }) => _id
 
+const getOrderTotalPriceByDate = async (parent: any, args: { email: string }) => {
+    const result = await DAL.getOrderTotalPriceByDate(args.email);
+    console.log(result);
+    return result.map((item:any)=>({date: item._id.date, totalPrice: item.totalPrice }));
+}
+
 export const resolvers = {
     CartProduct: {
         id
@@ -104,7 +110,8 @@ export const resolvers = {
         getProducts,
         getProduct,
         getMyOrders,
-        getUser
+        getUser,
+        getOrderTotalPriceByDate
     },
     Mutation: {
         addProduct,

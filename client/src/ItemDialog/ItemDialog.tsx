@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {ItemType} from "../Item/Item";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import {useCurrencyConverter} from "../Hooks/useCurrencyConverter";
 
 interface ItemDialogProps {
     isOpen: boolean,
@@ -34,6 +35,8 @@ export const ItemDialog = ({
                                addToFavorite,
                                inFavorites
                            }: ItemDialogProps) => {
+
+    const priceUSD = useCurrencyConverter(item.price).toFixed(2);
 
     return (
         <Dialog
@@ -81,7 +84,7 @@ export const ItemDialog = ({
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle1" color="text.secondary" component="div">
-                            Price: {item.price} ₪
+                            Price: {item.price} ₪ | {priceUSD} $
                         </Typography>
                     </Grid>
                 </Grid>

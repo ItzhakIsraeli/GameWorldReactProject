@@ -18,10 +18,12 @@ import {client} from "../App";
 import Empty from "../assets/Empty.png";
 import {Grid} from "@mui/material";
 import {UserStatistics} from "../UserStatistics/UserStatistics";
+import {UserProfile} from "../UserProfile/UserProfile";
 
 export default function Main() {
     const [final, setFinal] = React.useState([]);
     const searchText = useSelector((state: StoreState) => filterOptionsMiniStore(state).searchText);
+    const filterOptions = useSelector((state: StoreState) => filterOptionsMiniStore(state).filterOptions);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
     const items = useSelector((state: StoreState) => itemsMiniStore(state).Products);
     const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
@@ -61,15 +63,24 @@ export default function Main() {
             );
     }, []);
 
-
     React.useEffect(() => {
         console.log('InMain item effect')
         if (items.length > 0) {
             const newList = items.filter((item: ItemType) => item.name.toLowerCase().includes(searchText.toLowerCase()));
             setFinal(newList);
-            // setFavoritesList(newList.filter((item: ItemType) => favorites?.includes(item.id)));
         }
     }, [searchText]);
+
+    React.useEffect(() => {
+        console.log('InMain item effect')
+        if (items.length > 0) {
+            const newList = items.filter((item: ItemType) => Number(item.price) >= Number(filterOptions.minPrice) &&
+                (filterOptions.maxPrice === '' || Number(item.price) <= Number(filterOptions.maxPrice)) &&
+                Number(item.userRate) >= Number(filterOptions.minUserRate) && Number(item.rate) >= Number(filterOptions.minMetaScore) &&
+                item.platform.toLocaleLowerCase().includes(filterOptions.platform.toLocaleLowerCase()));
+            setFinal(newList);
+        }
+    }, [filterOptions]);
 
     React.useEffect(() => {
         console.log('InMain favorites effect')
@@ -85,10 +96,10 @@ export default function Main() {
                 currentPage === CURRENT_PAGE.HOME_PAGE && <ItemList data={final}/>
             }
             {
-                currentPage === CURRENT_PAGE.PROFILE_PAGE && <UserStatistics/>
+                currentPage === CURRENT_PAGE.PROFILE_PAGE && <UserProfile/>
             }
             {
-                currentPage === CURRENT_PAGE.MY_ORDERS_PAGE && <div> My Orders </div>
+                currentPage === CURRENT_PAGE.USER_STATISTICS && <UserStatistics/>
             }
             {
                 currentPage === CURRENT_PAGE.FAVORITES_PAGE && favoritesList.length > 0 &&

@@ -3,8 +3,8 @@ import {AppSettingsTypes} from "./appSettingsTypes";
 export enum CURRENT_PAGE {
     HOME_PAGE = 'HOME_PAGE',
     PROFILE_PAGE = 'PROFILE_PAGE',
-    MY_ORDERS_PAGE = 'MY_ORDERS_PAGE',
     FAVORITES_PAGE = 'FAVORITES_PAGE',
+    USER_STATISTICS = 'USER_STATISTICS'
 }
 
 export interface AppSettingsState {
