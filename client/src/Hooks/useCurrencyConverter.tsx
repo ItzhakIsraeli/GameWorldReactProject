@@ -11,7 +11,7 @@ export const useCurrencyConverter = (amount: number) => {
             const rate = data.rates.USD;
             setConvertedAmount(amount * rate);
         };
-        convert().then(r => console.log('convert successfully', r));
+        convert();
     }, [amount]);
 
     return convertedAmount;

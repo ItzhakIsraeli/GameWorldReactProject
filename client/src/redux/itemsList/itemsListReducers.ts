@@ -73,16 +73,6 @@ const itemsListReducer = (state: ItemsState = initialState, action: actionI) => 
                     })
                 }).flat()
             };
-        // case ItemsListTypes.UPDATE_PRODUCT_LIMIT:
-        // return {
-        //     ...state,
-        //     Products: state.Products.map((prod:Product)=>{
-        //         if (prod.id === action.payload.cartProducts[0].id){
-        //            prod= {...prod,limit: prod.limit + action.payload.cartProducts[0].amount}
-        //         }
-        //         return prod
-        //     })
-        // };
         case ItemsListTypes.UPDATE_ITEM_IN_CART:
             return {
                 ...state,
@@ -107,7 +97,6 @@ const itemsListReducer = (state: ItemsState = initialState, action: actionI) => 
                 CartList: []
             }
 
-        // TODO: add the whole item to the favorites list and not only the id
         case ItemsListTypes.Add_ITEM_TO_FAVORITES:
             return {
                 ...state,

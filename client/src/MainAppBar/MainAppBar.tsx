@@ -19,16 +19,15 @@ export default function MainAppBar() {
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const currentPage = useSelector((state: StoreState) => appSettingsMiniStore(state).currentPage);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [checkout, {data}] = useMutation(CHECKOUT);
-
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const [checkout] = useMutation(CHECKOUT);
 
     const getTotalItems = () => {
         return items.length;
     }
 
     const handleClose = () => {
-        setIsOpen(false)
+        setIsOpen(false);
     }
 
     const handleCheckOut = () => {
@@ -38,7 +37,7 @@ export default function MainAppBar() {
         );
 
         items.forEach((item: CartItemType) => {
-            itemsCheckout.push({id: item.product.id, amount: item.amount})
+            itemsCheckout.push({id: item.product.id, amount: item.amount});
         })
         checkout({
             variables: {
@@ -52,7 +51,7 @@ export default function MainAppBar() {
                     products: itemsCheckout
                 }
             }
-        }).then(console.log).catch((e) => console.log);
+        }).then(console.log).catch((e) => console.log(e));
     }
 
     return (

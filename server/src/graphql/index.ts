@@ -19,21 +19,19 @@ export const startApolloServer = async (httpServer: Server, app: Express): Promi
         },
         subscriptions: {
             onConnect: (connectionParams: any, webSocket, context) => {
-                console.log(connectionParams?.userId)
                 if (connectionParams?.userId) {
                     const userId = connectionParams.userId;
                     createUserCart(userId);
                     return {userId};
-                } else{
+                } else {
                     createUserCart("GraphqlUser");
                 }
-                // throw new Error(" user without userId tries to open connection");
             },
             onDisconnect: (websocket, context) => {
                 context.initPromise?.then(value => {
                     const cartUpdate = releaseUserCart(value.userId);
                     pubsub.publish("CART_UPDATE", {cartUpdate});
-                }).catch(error => console.log(`Error in Promise ${error}`))
+                }).catch(error => console.log(`Error in Promise ${error}`));
             },
         },
         playground: {

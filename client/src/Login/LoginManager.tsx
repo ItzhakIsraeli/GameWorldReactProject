@@ -18,6 +18,7 @@ export default function LoginManager() {
     const [authUser, setAuthUser] = React.useState<any>(null);
 
     const dispatch = useDispatch();
+
     React.useEffect(() => {
         const listen = onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -35,10 +36,10 @@ export default function LoginManager() {
                     console.log(error);
                 });
                 setAuthUser(user);
-                console.log('user', user, user.email, user.uid)
+                console.log('user', user, user.email, user.uid);
                 dispatch(addUserData({email: user.email, fireBaseId: user.uid}));
             } else {
-                setAuthUser(null)
+                setAuthUser(null);
             }
         })
 
@@ -49,9 +50,9 @@ export default function LoginManager() {
 
     const userSignOut = () => {
         signOut(auth).then(() => {
-            console.log('Sign out successfully')
+            console.log('Sign out successfully');
         }).catch((error) => {
-            console.log(error)
+            console.log(error);
         })
     }
 

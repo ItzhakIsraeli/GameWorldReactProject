@@ -63,14 +63,14 @@ export const UserProfile = () => {
                     setDeleteFailed(false);
                     dispatch(setCurrentPage(CURRENT_PAGE.HOME_PAGE));
                     setDeletePopUp(false);
-                    console.log(`User ${user.email} removed from DB successfully`)
+                    console.log(`User ${user.email} removed from DB successfully`);
                 }).catch((e) => {
                     setDeleteFailed(true);
                     console.log(e);
                 })
             }).catch((e) => {
                 setDeleteFailed(true);
-                console.log(e)
+                console.log(e);
             })
         }
     }
@@ -97,7 +97,7 @@ export const UserProfile = () => {
                 state,
                 address
             }))
-            console.log(`User ${userData.email} Update Successfully !`)
+            console.log(`User ${userData.email} Update Successfully !`);
         }).catch((e) => console.log(e));
         setEditMode(false);
     }

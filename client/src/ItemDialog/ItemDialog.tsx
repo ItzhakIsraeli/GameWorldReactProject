@@ -25,7 +25,6 @@ interface ItemDialogProps {
     inFavorites: boolean
 }
 
-
 export const ItemDialog = ({
                                item,
                                isOpen,

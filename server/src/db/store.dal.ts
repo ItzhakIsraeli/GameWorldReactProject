@@ -65,6 +65,7 @@ export const updateUser = async (email: string, field: Partial<User>): Promise<U
 
 export const getUser = async (email: string): Promise<User | null> => UserModel.findOne({email});
 
+// Use Map Reduce + Group by - Mongo Aggregation
 export const getOrderTotalPriceByDate = async (email: string): Promise<any> => OrderModel.aggregate([
     {
         $match: {email: email}

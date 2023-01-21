@@ -4,7 +4,7 @@ const mongooseUri = 'mongodb+srv://digitalstore:digitalstore@digitalstore.1chfv5
 export const db = mongoose.connection;
 
 export const connect = () => {
-    const dbConnection = mongoose.connect(mongooseUri, { dbName: "src"});
+    const dbConnection = mongoose.connect(mongooseUri, {dbName: "src"});
     db.on('open', () => console.log('connected to MongoDB'));
     db.on('error', () => console.log('fail to connect'));
     return dbConnection;

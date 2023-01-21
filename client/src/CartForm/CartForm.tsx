@@ -30,6 +30,7 @@ export const CartForm = ({isOpen, handleClose, handleCheckOut}: CartFormProps) =
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
     const dispatch = useDispatch();
+
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const timer = React.useRef<number>();
@@ -54,12 +55,12 @@ export const CartForm = ({isOpen, handleClose, handleCheckOut}: CartFormProps) =
     const calculateTotal = () => {
         return items.reduce((currentValue, item: CartItemType) =>
             currentValue += item.product.price * item.amount, 0
-        )
-    }
+        );
+    };
 
     const handleCancel = () => {
         handleClose();
-    }
+    };
 
     const handleSubscribe = () => {
         if (!loading) {

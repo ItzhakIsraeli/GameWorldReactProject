@@ -18,7 +18,7 @@ export const StatisticGraph = () => {
                 }
             })
             .then((result: any) => {
-                setData(result.data.getOrderTotalPriceByDate);
+                    setData(result.data.getOrderTotalPriceByDate);
                     console.log('result', result);
                 }
             );
@@ -29,7 +29,7 @@ export const StatisticGraph = () => {
         <BarChart width={600} height={600} data={data}>
             <Bar dataKey="totalPrice" fill="#f27185" animationDuration={4000}/>
             <CartesianGrid stroke="#ccc"/>
-            <XAxis dataKey="date" />
+            <XAxis dataKey="date"/>
             <YAxis color={''}/>
         </BarChart>
     );

@@ -17,40 +17,6 @@ export const GET_ALL_PRODUCTS = gql`
     }
 `;
 
-export const GET_MY_ORDERS = gql`
-    query GetMyOrders($userId: String) {
-        getMyOrders(userId: $userId){
-           firstName
-            lastName
-            date
-            email
-            phone
-            totalPrice
-            products {
-                id
-                amount
-            }
-        }
-    }
-`;
-
-export const GET_PRODUCT = gql`
-    query GetProduct($id: ID) {
-        getProduct(id: $id){
-            id
-            name
-            rate
-            userRate
-            platform
-            releaseDate
-            description
-            price
-            image
-            limit
-        }
-    }
-`;
-
 export const GET_USER = gql`
     query GetUser($userId: String) {
         getUser(userId: $userId){
@@ -173,23 +139,6 @@ export const CHECKOUT = gql`
             price
             image
             limit
-        }
-    }
-`;
-
-export const ADD_ORDER = gql`
-    mutation addOrder($body: OrderInput!){
-        addOrder(body: $body){
-            firstName
-            lastName
-            date
-            userId
-            phone
-            totalPrice
-            products {
-                id
-                amount
-            }
         }
     }
 `;

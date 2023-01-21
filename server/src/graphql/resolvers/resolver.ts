@@ -55,7 +55,7 @@ const checkout = async (parent: any, args: { userId: string, order: Order }, req
 const getMyOrders = async (parent: any, args: { userId: string }) => {
     const result = await DAL.getMyOrders(args.userId);
     if (!result) {
-        throw new Error(`Orders not Found BY User: ${args.userId}`)
+        throw new Error(`Orders not Found BY User: ${args.userId}`);
     }
     return result;
 };
@@ -67,7 +67,7 @@ const addUser = (paren: any, args: { body: User }) => DAL.addUser(args.body);
 const updateUser = async (parent: any, args: { userId: string, body: Partial<User> }) => {
     const result = await DAL.updateUser(args.userId, args.body);
     if (!result) {
-        throw new Error(`User not Found : ${args.userId}`)
+        throw new Error(`User not Found : ${args.userId}`);
     }
     return result;
 }
@@ -75,7 +75,7 @@ const updateUser = async (parent: any, args: { userId: string, body: Partial<Use
 const removeUser = async (parent: any, args: { userId: string }) => {
     const result = await DAL.removeUser(args.userId);
     if (!result) {
-        throw new Error(`User not Found : ${args.userId}`)
+        throw new Error(`User not Found : ${args.userId}`);
     }
     return result;
 }
@@ -83,7 +83,7 @@ const removeUser = async (parent: any, args: { userId: string }) => {
 const getUser = async (parent: any, args: { userId: string }) => {
     const result = await DAL.getUser(args.userId);
     if (!result) {
-        throw new Error(`User ${args.userId} not Found !`)
+        throw new Error(`User ${args.userId} not Found !`);
     }
     return result;
 };
@@ -99,7 +99,7 @@ const id = ({_id}: { _id: string }) => _id
 const getOrderTotalPriceByDate = async (parent: any, args: { email: string }) => {
     const result = await DAL.getOrderTotalPriceByDate(args.email);
     console.log(result);
-    return result.map((item:any)=>({date: item._id.date, totalPrice: item.totalPrice }));
+    return result.map((item: any) => ({date: item._id.date, totalPrice: item.totalPrice}));
 }
 
 export const resolvers = {

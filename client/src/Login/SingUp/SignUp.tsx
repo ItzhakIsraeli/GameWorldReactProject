@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -15,7 +13,7 @@ import {Copyright} from "../SignIn/SignIn";
 import {createUserWithEmailAndPassword} from 'firebase/auth';
 import {auth} from "../../Firebase/firebase";
 import {useMutation} from "@apollo/client";
-import {ADD_USER, UPDATE_CART} from "../../GraphQl/Schema";
+import {ADD_USER} from "../../GraphQl/Schema";
 import {useDispatch, useSelector} from "react-redux";
 import {StoreState, userDataMiniStore} from "../../redux/miniStore";
 import {addUserData, addUserDetails} from "../../redux/userData/userDataActions";
@@ -28,17 +26,17 @@ interface SignUpProps {
 }
 
 export default function SignUp({handleClose, openSignIn}: SignUpProps) {
-    const [firstName, setFirstName] = React.useState('');
-    const [lastName, setLastName] = React.useState('');
-    const [email, setEmail] = React.useState('');
-    const [phone, setPhone] = React.useState('');
-    const [password, setPassword] = React.useState('');
-    const [age, setAge] = React.useState('');
-    const [address, setAddress] = React.useState('');
-    const [state, setState] = React.useState('');
-    const [isError, setIsError] = React.useState(false);
+    const [firstName, setFirstName] = React.useState<string>('');
+    const [lastName, setLastName] = React.useState<string>('');
+    const [email, setEmail] = React.useState<string>('');
+    const [phone, setPhone] = React.useState<string>('');
+    const [password, setPassword] = React.useState<string>('');
+    const [age, setAge] = React.useState<string>('');
+    const [address, setAddress] = React.useState<string>('');
+    const [state, setState] = React.useState<string>('');
+    const [isError, setIsError] = React.useState<boolean>(false);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
-    const [addUser, {data}] = useMutation(ADD_USER);
+    const [addUser] = useMutation(ADD_USER);
 
     const dispatch = useDispatch();
 
@@ -46,7 +44,6 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
         event.preventDefault();
 
         createUserWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-            console.log(userCredentials);
             setIsError(false);
             dispatch(addUserData({
                 fireBaseId: userCredentials.user.uid, email
@@ -191,20 +188,10 @@ export default function SignUp({handleClose, openSignIn}: SignUpProps) {
                                     autoComplete="new-password"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
-                                <Grid container>
-                                    <Grid item>
-                                        <FormControlLabel
-                                            control={<Checkbox value="allowExtraEmails" color="primary"/>}
-                                            label="Keep me up to date on news and exclusive offers"
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
                         </Grid>
                         {isError &&
                             <Typography color={'error'}>
-                                The Email already exist in the system.
+                                The Email Wrong or already exist in the system.
                                 Try to Log In or Sing Up with different Email.
                             </Typography>}
                         <Button
