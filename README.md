@@ -1,5 +1,9 @@
 # 🎮 Game World React Project 🎮
 
+# Written By
+## Itzhak Israeli - 208011320
+## Mor Refael - 208297515
+
 ## Available Folders
 ### In the project directory, you have two folders:
 
