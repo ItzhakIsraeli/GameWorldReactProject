@@ -30,7 +30,6 @@ export async function scrapeData() {
             games[idx].image = $(el)?.children("a")?.children("img")?.attr()?.src;
         })
 
-        // console.log(games);
         return games;
     } catch (err) {
         console.error(err);

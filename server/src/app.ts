@@ -21,6 +21,7 @@ const init = async () => {
     await startApolloServer(httpServer, app);
     httpServer.on('request', app);
     await httpServer.listen(port, () => console.log(`server running in port ${port}`));
+
     // TODO: remove comment when want to activate scraping
     // games = await scrapeData();
     // console.log(games)

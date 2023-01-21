@@ -37,13 +37,14 @@ const isInCart = (id: string, items: CartItemType[]) => {
 }
 
 export const Item = (item: ItemType) => {
-    const [updateCart, {data}] = useMutation(UPDATE_CART);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const favorites: string[] = useSelector((state: StoreState) => itemsMiniStore(state).Favorites);
+    const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const dispatch = useDispatch();
+
+    const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const priceUSD = useCurrencyConverter(item.price).toFixed(2);
+    const [updateCart] = useMutation(UPDATE_CART);
 
     const handleClose = () => setIsOpen(false)
     const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -71,7 +72,6 @@ export const Item = (item: ItemType) => {
     }
 
     const addToFavorites = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log('inItem add to favorites')
         if (favorites.includes(item.id)) {
             dispatch(removeItemFromFavorites(item.id));
         } else {

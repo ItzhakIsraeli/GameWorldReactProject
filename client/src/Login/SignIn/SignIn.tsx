@@ -32,15 +32,14 @@ interface SignInProps {
 }
 
 export default function SignIn({handleClose, openSignUp}: SignInProps) {
-    const [email, setEmail] = React.useState('');
-    const [error, setError] = React.useState(false);
-    const [password, setPassword] = React.useState('');
+    const [email, setEmail] = React.useState<string>('');
+    const [error, setError] = React.useState<boolean>(false);
+    const [password, setPassword] = React.useState<string>('');
     const dispatch = useDispatch();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         signInWithEmailAndPassword(auth, email, password).then((userCredentials) => {
-            console.log(userCredentials);
             client
                 .query({
                     query: GET_USER,
@@ -116,13 +115,6 @@ export default function SignIn({handleClose, openSignUp}: SignInProps) {
                             Sing In
                         </Button>
                         <Grid container>
-                            <Grid item>
-                                <Button>
-                                    <Typography variant={'caption'}>
-                                        Forgot password ?
-                                    </Typography>
-                                </Button>
-                            </Grid>
                             <Grid item>
                                 <Button onClick={openSignUp}>
                                     <Typography variant={'caption'}>

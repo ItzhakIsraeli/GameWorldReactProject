@@ -38,16 +38,13 @@ export default function Main() {
                 userId: user.userId
             },
             onSubscriptionData: (data) => {
-                console.log(data)
-                data?.subscriptionData?.data?.cartUpdate && dispatch(updateProductLimit(data?.subscriptionData?.data?.cartUpdate))
+                data?.subscriptionData?.data?.cartUpdate && dispatch(updateProductLimit(data?.subscriptionData?.data?.cartUpdate));
             }
         }
     );
 
 
     React.useEffect(() => {
-        console.log('InMain getAllProducts effect')
-
         client
             .query({
                 query: GET_ALL_PRODUCTS,
@@ -56,7 +53,6 @@ export default function Main() {
                 }
             })
             .then((result: any) => {
-                    console.log('ImMain client effect')
                     dispatch(loadProducts(result.data.getProducts));
                     setFinal(result.data.getProducts);
                 }
@@ -64,30 +60,21 @@ export default function Main() {
     }, []);
 
     React.useEffect(() => {
-        console.log('InMain item effect')
         if (items.length > 0) {
-            const newList = items.filter((item: ItemType) => item.name.toLowerCase().includes(searchText.toLowerCase()));
-            setFinal(newList);
-        }
-    }, [searchText]);
-
-    React.useEffect(() => {
-        console.log('InMain item effect')
-        if (items.length > 0) {
-            const newList = items.filter((item: ItemType) => Number(item.price) >= Number(filterOptions.minPrice) &&
+            const newList = items.filter((item: ItemType) => item.name.toLowerCase().includes(searchText.toLowerCase()) &&
+                Number(item.price) >= Number(filterOptions.minPrice) &&
                 (filterOptions.maxPrice === '' || Number(item.price) <= Number(filterOptions.maxPrice)) &&
                 Number(item.userRate) >= Number(filterOptions.minUserRate) && Number(item.rate) >= Number(filterOptions.minMetaScore) &&
                 item.platform.toLocaleLowerCase().includes(filterOptions.platform.toLocaleLowerCase()));
             setFinal(newList);
         }
-    }, [filterOptions]);
+    }, [searchText, filterOptions]);
 
     React.useEffect(() => {
-        console.log('InMain favorites effect')
         if (items.length > 0) {
-            setFavoritesList(items.filter((item: ItemType) => favorites?.includes(item.id)))
+            setFavoritesList(items.filter((item: ItemType) => favorites?.includes(item.id)));
         }
-    }, [favorites])
+    }, [favorites]);
 
     return (
         <>

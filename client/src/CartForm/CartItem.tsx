@@ -43,9 +43,10 @@ const MenuProps = {
         },
     },
 };
+
 export const CartItem = ({item}: CartItemProps) => {
 
-    const [updateCart, {data}] = useMutation(UPDATE_CART);
+    const [updateCart] = useMutation(UPDATE_CART);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
 
 
@@ -57,14 +58,14 @@ export const CartItem = ({item}: CartItemProps) => {
     React.useEffect(() => {
         cartList.map((cartItem: CartItemType) => {
             if (item.product.id === cartItem.product.id) {
-                setLimitArr(new Array(cartItem.product.limit).fill(0))
+                setLimitArr(new Array(cartItem.product.limit).fill(0));
             }
         })
-    }, [cartList])
+    }, [cartList]);
 
     React.useEffect(() => {
         setLimitArr(new Array(item.product.limit).fill(0));
-    }, [limit])
+    }, [limit]);
 
     const handleChange = (e: SelectChangeEvent<number | undefined>) => {
         console.log(item.amount);
@@ -75,8 +76,8 @@ export const CartItem = ({item}: CartItemProps) => {
                 amount: Number(e.target.value)
             }
         }).then(() => console.log('update cart in CartItem => Change'));
-        setLimit(Number(e.target.value))
-        dispatch(updateAmount(item.product, Number(e.target.value)))
+        setLimit(Number(e.target.value));
+        dispatch(updateAmount(item.product, Number(e.target.value)));
     }
 
     const handleRemoveItem = () => {

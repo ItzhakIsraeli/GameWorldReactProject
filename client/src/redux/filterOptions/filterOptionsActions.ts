@@ -8,7 +8,7 @@ export const addSearchText = (searchText: string) => {
     }
 };
 
-export const addFilterOptions = (filterOptions:FilterOptionType) => {
+export const addFilterOptions = (filterOptions: FilterOptionType) => {
     return {
         type: FilterOptionsTypes.ADD_FILTER_OPTIONS,
         payload: filterOptions

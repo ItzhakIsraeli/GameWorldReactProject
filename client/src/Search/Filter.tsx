@@ -1,14 +1,15 @@
 import {
     Box,
     Button,
-    Container, CssBaseline,
+    Container,
+    CssBaseline,
     Dialog,
     FormControl,
     Grid,
     InputLabel,
     MenuItem,
-    Select, SelectChangeEvent,
-    Switch,
+    Select,
+    SelectChangeEvent,
     TextField,
     Typography
 } from "@mui/material";
@@ -39,7 +40,7 @@ export default function Filter({isFilterOpen, handleCloseFilterForm}: FilterProp
     }
 
     const handleFilter = () => {
-        dispatch(addFilterOptions({minUserRate, minMetaScore, minPrice, maxPrice, platform}))
+        dispatch(addFilterOptions({minUserRate, minMetaScore, minPrice, maxPrice, platform}));
     }
 
     return (

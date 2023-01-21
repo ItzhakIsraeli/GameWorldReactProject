@@ -1,19 +1,17 @@
 import React from 'react';
 import Main from "./Main/Main";
-import {ApolloClient, HttpLink, InMemoryCache, split, useSubscription} from "@apollo/client";
+import {ApolloClient, HttpLink, InMemoryCache, split} from "@apollo/client";
 import {getMainDefinition} from "@apollo/client/utilities";
-import {SUBSCRIPTION_QUERY, typeDefs} from "./GraphQl/Schema";
+import {typeDefs} from "./GraphQl/Schema";
 import {WebSocketLink} from "@apollo/client/link/ws";
 import {ApolloProvider} from "@apollo/react-hooks";
-import {updateProductLimit} from "./redux/itemsList/itemsListActions";
 import {useDispatch} from "react-redux";
-import {addUserData, addUserId} from "./redux/userData/userDataActions";
+import {addUserId} from "./redux/userData/userDataActions";
 
 const userId = Date.now().toString();
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:3001/graphql',
-    // credentials: 'include'
+    uri: 'http://localhost:3001/graphql'
 });
 
 const wsLink = new WebSocketLink({
@@ -24,7 +22,7 @@ const wsLink = new WebSocketLink({
         },
         reconnect: true
     }
-})
+});
 
 const splitLink = split(
     ({query}) => {
@@ -39,17 +37,16 @@ const splitLink = split(
 );
 
 export const client = new ApolloClient({
-    // uri: 'http://localhost:3001/graphql',
     typeDefs: typeDefs,
     link: splitLink,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache()
 });
 
 function App() {
-
     const dispatch = useDispatch();
+
     React.useEffect(() => {
-        dispatch(addUserId(userId))
+        dispatch(addUserId(userId));
     }, [])
 
     return (

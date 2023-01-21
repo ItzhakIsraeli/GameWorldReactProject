@@ -5,9 +5,9 @@ import {AppSettingsState} from "./appSettings/appSettingsReducers";
 
 export interface StoreState {
     items: ItemsState,
-    filterOptions:FilterOptionsState,
-    userData:UserDataState,
-    appSettings:AppSettingsState
+    filterOptions: FilterOptionsState,
+    userData: UserDataState,
+    appSettings: AppSettingsState
 }
 
 export const itemsMiniStore = (state: StoreState) => state.items;
