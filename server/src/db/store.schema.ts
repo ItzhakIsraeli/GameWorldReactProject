@@ -32,7 +32,7 @@ export interface User extends mongoose.Document {
 export interface Order extends mongoose.Document {
     firstName: string,
     lastName: string,
-    userId: string,
+    email: string,
     date: string,
     phone: string,
     totalPrice: number,
@@ -58,7 +58,7 @@ const ProductModelSchema = new Schema<Product>({
 const OrderModelSchema = new Schema<Order>({
     firstName: String,
     lastName: String,
-    userId: String,
+    email: String,
     date: String,
     phone: String,
     totalPrice: Number,

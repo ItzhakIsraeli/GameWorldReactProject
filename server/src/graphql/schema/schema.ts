@@ -17,7 +17,7 @@ export const typeDefs = gql`
         firstName: String,
         lastName: String,
         date: String,
-        userId: String,
+        email: String,
         phone: String,
         totalPrice: Int,
         products: [CartProduct]
@@ -49,6 +49,11 @@ export const typeDefs = gql`
         getProduct(id: ID): Product
         getMyOrders(userId: String): [Order]
         getUser(userId: String): User
+        getOrderTotalPriceByDate(email: String): [OrderByDate]
+    }
+    type OrderByDate {
+        date: String
+        totalPrice: Int
     }
     input AddProductInput {
         name: String!
@@ -75,7 +80,7 @@ export const typeDefs = gql`
     input OrderInput {
         firstName: String!
         lastName: String!
-        userId: String!
+        email: String!
         date: String!
         phone: String!
         totalPrice: Int!

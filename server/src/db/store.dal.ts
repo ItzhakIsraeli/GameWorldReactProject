@@ -57,10 +57,22 @@ export const checkout = async (checkoutProducts: CartProduct[]): Promise<Product
 
 export const addUser = async (user: User): Promise<User> => UserModel.create(user);
 
-export const removeUser = async (userId: string): Promise<User | null> =>
-    UserModel.findOneAndRemove({userId}, {new: true});
+export const removeUser = async (email: string): Promise<User | null> =>
+    UserModel.findOneAndRemove({email}, {new: true});
 
-export const updateUser = async (userId: string, field: Partial<User>): Promise<User | null> =>
-    UserModel.findOneAndUpdate({userId}, field, {new: true});
+export const updateUser = async (email: string, field: Partial<User>): Promise<User | null> =>
+    UserModel.findOneAndUpdate({email}, field, {new: true});
 
 export const getUser = async (email: string): Promise<User | null> => UserModel.findOne({email});
+
+export const getOrderTotalPriceByDate = async (email: string): Promise<any> => OrderModel.aggregate([
+    {
+        $match: {email: email}
+    },
+    {
+        $group: {
+            _id: {date: "$date"},
+            totalPrice: {$sum: "$totalPrice"}
+        }
+    }
+]);

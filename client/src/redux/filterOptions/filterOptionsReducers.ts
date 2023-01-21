@@ -1,7 +1,16 @@
 import {FilterOptionsTypes} from "./filterOptionsTypes";
 
 export interface FilterOptionsState {
-    searchText: string
+    searchText: string,
+    filterOptions: FilterOptionType
+}
+
+export interface FilterOptionType {
+    minUserRate: string,
+    minMetaScore: string,
+    minPrice: string,
+    maxPrice: string,
+    platform: string
 }
 
 interface actionI {
@@ -12,7 +21,14 @@ interface actionI {
 }
 
 const initialState: FilterOptionsState = {
-    searchText: ''
+    searchText: '',
+    filterOptions: {
+        minUserRate: '',
+        minMetaScore: '',
+        minPrice: '',
+        maxPrice: '',
+        platform: ''
+    }
 };
 
 const filterOptionsReducer = (state: FilterOptionsState = initialState, action: actionI) => {
@@ -23,6 +39,16 @@ const filterOptionsReducer = (state: FilterOptionsState = initialState, action: 
                 searchText: action.payload
             };
 
+        case FilterOptionsTypes.ADD_FILTER_OPTIONS:
+            return {
+                ...state,
+                filterOptions: action.payload
+            }
+        case FilterOptionsTypes.CLEAR_FILTER_OPTIONS:
+            return {
+                ...state,
+                filterOptions: initialState.filterOptions
+            }
         default:
             return state
     }

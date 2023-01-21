@@ -23,7 +23,7 @@ export const GET_MY_ORDERS = gql`
            firstName
             lastName
             date
-            userId
+            email
             phone
             totalPrice
             products {
@@ -67,6 +67,15 @@ export const GET_USER = gql`
     }
 `;
 
+export const GET_ORDER_TOTAL_PRICE_BY_DATE = gql`
+    query getOrderTotalPriceByDate($email: String) {
+        getOrderTotalPriceByDate(email: $email){
+            date
+            totalPrice
+        }
+    }
+`;
+
 export const UPDATE_CART = gql`
     mutation UpdateCart($userId: String!, $productId: ID!, $amount: Int!){
         updateCart(userId: $userId, productId: $productId, amount: $amount){
@@ -92,6 +101,7 @@ export const typeDefs = gql`
     type Order {
         firstName: String,
         lastName: String,
+        email: String,
         date: String,
         phone: String,
         totalPrice: Int,
@@ -100,7 +110,7 @@ export const typeDefs = gql`
     input OrderInput {
         firstName: String!,
         lastName: String!,
-        userId: String!,
+        email: String!,
         date: String!
         phone: String!,
         totalPrice: Int!
@@ -113,6 +123,10 @@ export const typeDefs = gql`
     input CartProductInput {
         id: ID!
         amount: Int!
+    }
+    type OrderByDate {
+        date: String
+        totalPrice: Int
     }
     type User {
         firstName: String,

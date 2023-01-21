@@ -1,67 +1,18 @@
 import React from "react";
-import {
-    LineChart,
-    ResponsiveContainer,
-    Legend, Tooltip,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid
-} from 'recharts';
-import {Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
+import {StatisticGraph} from "../StatisticGraph/StatisticGraph";
 
-const pdata = [
-    {
-        name: 'MongoDb',
-        student: 11,
-        fees: 120
-    },
-    {
-        name: 'Javascript',
-        student: 15,
-        fees: 12
-    },
-    {
-        name: 'PHP',
-        student: 5,
-        fees: 10
-    },
-    {
-        name: 'Java',
-        student: 10,
-        fees: 5
-    },
-    {
-        name: 'C#',
-        student: 9,
-        fees: 4
-    },
-    {
-        name: 'C++',
-        student: 10,
-        fees: 8
-    }
-];
 export const UserStatistics = () => {
     return (
         <>
-            <Typography variant={'h3'}>
-                User Statistics
-            </Typography>
-            <ResponsiveContainer width="100%" aspect={3}>
-                <LineChart data={pdata} margin={{right: 300}}>
-                    <CartesianGrid/>
-                    <XAxis dataKey="name"
-                           interval={'preserveStartEnd'}/>
-                    <YAxis></YAxis>
-                    <Legend/>
-                    <Tooltip/>
-                    <Line dataKey="student"
-                          stroke="black" activeDot={{r: 8}}/>
-                    <Line dataKey="fees"
-                          stroke="red" activeDot={{r: 8}}/>
-                </LineChart>
-            </ResponsiveContainer>
+            <Grid container alignItems={'center'} justifyContent={'center'}>
+                <Typography variant={'h3'}>
+                    User Statistics
+                </Typography>
+                <Grid container alignItems={'center'} justifyContent={'center'}>
+                    <StatisticGraph/>
+                </Grid>
+            </Grid>
         </>
     )
 }

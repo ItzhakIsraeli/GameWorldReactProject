@@ -29,7 +29,6 @@ interface CartFormProps {
 export const CartForm = ({isOpen, handleClose, handleCheckOut}: CartFormProps) => {
     const items = useSelector((state: StoreState) => itemsMiniStore(state).CartList);
     const user = useSelector((state: StoreState) => userDataMiniStore(state).userData);
-
     const dispatch = useDispatch();
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
@@ -124,7 +123,8 @@ export const CartForm = ({isOpen, handleClose, handleCheckOut}: CartFormProps) =
                     <Grid container justifyContent={'center'} gap={10}>
                         <Button onClick={handleCancel} variant={'contained'}>Cancel</Button>
                         {items.length > 0 &&
-                            <Button onClick={handleSubscribe} variant={'contained'} sx={buttonSx} disabled={user.fireBaseId === ""}>Checkout</Button>}
+                            <Button onClick={handleSubscribe} variant={'contained'} sx={buttonSx}
+                                    disabled={user.fireBaseId === ""}>Checkout</Button>}
 
                         {loading && (
                             <CircularProgress

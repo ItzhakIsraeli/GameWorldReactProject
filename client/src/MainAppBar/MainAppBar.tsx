@@ -45,7 +45,7 @@ export default function MainAppBar() {
                 userId: user.userId, order: {
                     firstName: user.userDetails.firstName,
                     lastName: user.userDetails.lastName,
-                    userId: user.userId,
+                    email: user.email,
                     date: new Date().toDateString(),
                     phone: user.userDetails.phone,
                     totalPrice,
